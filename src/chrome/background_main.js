@@ -60,7 +60,7 @@ function main(){
 
     var menuItem = chrome.contextMenus.create({
         "id": config.dbName
-        , "title": "svae your selection text"
+        , "title": "svae selection text"
         , "contexts": ["selection"]
     });
 
