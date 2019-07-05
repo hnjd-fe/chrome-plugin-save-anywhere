@@ -1,6 +1,10 @@
 # chrome-plugin-save-anywhere
 
-chrome 浏览器插件 - 任何位置任何页面保存选中的文本
+chrome browser plugin - save your seleciton in anywhere
+
+
+
+# develop how
 
 ## init
   yarn
