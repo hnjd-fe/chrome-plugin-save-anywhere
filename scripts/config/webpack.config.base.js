@@ -50,7 +50,7 @@ function createHappyPlugin(id, loaders) {
 let webpackConfig = {
     entry: config.common.entries,
     output: {
-        path: helpers.root('/dist/'),
+        path: helpers.root('/save-anywhere/'),
         filename: 'js/[name]_[hash].js',
         chunkFilename: 'js/[name]_[hash].js',
         publicPath: './'

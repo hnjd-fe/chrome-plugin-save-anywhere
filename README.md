@@ -15,4 +15,4 @@ chrome 浏览器插件 - 任何位置任何页面保存选中的文本
 ## publish
   yarn build 
   
-  all static file in /dist/
+  all static file in /save-anywhere/

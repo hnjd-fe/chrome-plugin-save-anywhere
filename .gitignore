@@ -6,6 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 yarn.lock
 
+save-anywhere
+
 .DS_Store
 
 prod.config.js

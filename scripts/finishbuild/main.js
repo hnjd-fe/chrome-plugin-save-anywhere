@@ -9,7 +9,7 @@ const rootDir = path.resolve( curDir, '../../' );
 const patchFile = path.resolve( curDir, 'patch.js' );
 
 const fixFileList = [
-    path.resolve( rootDir, 'dist/js/background.js' )
+    path.resolve( rootDir, 'save-anywhere/js/background.js' )
 ]
 
 const patchContent = fs.readFileSync( patchFile, { encoding: 'utf8' } );

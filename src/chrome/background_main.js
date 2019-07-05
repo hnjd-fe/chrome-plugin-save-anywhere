@@ -43,7 +43,7 @@ main();
 function addNote(info, tab) {
 	console.log( 'addNote', Date.now() );
 
-	let note = [ siteTitle + info.selectionText ].join( ' - ' )
+	let note = [ tab.title + info.selectionText ].join( ' - ' )
 
 	db.add( {
 		note: note
