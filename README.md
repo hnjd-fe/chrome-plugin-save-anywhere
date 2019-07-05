@@ -16,7 +16,7 @@ chrome browser plugin - save selection text in anywhere
 
 ![item_save.jpeg](./static/item_save.jpeg)
 
-## step 4 - get saved text in popup
+## step 4 - get saved content in popup
 
 ![item_popup.jpeg](./static/item_popup.jpeg)
 
