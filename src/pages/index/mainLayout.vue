@@ -1,0 +1,142 @@
+<template>
+  <el-container>
+    <el-header style="text-align: left; font-size: 12px">
+        <el-row>
+            <el-col :span="10">
+                <span>
+                    <i class="el-icon-logo" style="margin-right: 15px"></i>
+                </span>
+                <span>{{packInfo.name}}</span>
+            </el-col>
+            <el-col :span="14" style="text-align:right;">
+                  <el-input
+                      placeholder="请输入内容"
+                      v-model="searchText"
+                      @input="onTextInput"
+                      >
+                      <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                  </el-input>    
+            </el-col>
+        </el-row>
+    </el-header>
+    
+    <el-main 
+		v-loading="loading"
+    >
+      <el-table :data="listData">
+        <el-table-column prop="id" label="ID" width="80"></el-table-column>
+        <el-table-column  label="文摘">
+            <template slot-scope="scope">
+            <div>
+                <a :href="scope.row.siteUrl" target="_blank">
+                    <label v-if="scope.row.siteTitle" style="display:block;font-weight:bold; margin-bottom:5px;"
+                    v-html="hightlightSearch(scope.row.siteTitle)"
+                    ></label>
+                </a>
+                    <span v-html="hightlightSearch(scope.row.note)"></span>
+                <a :href="scope.row.siteUrl" target="_blank">
+                    <label v-if="scope.row.siteUrl" style="display:block; margin-top:5px;">{{scope.row.siteUrl}}</label>
+                </a>
+            </div>
+            </template>
+        </el-table-column>
+        <el-table-column  label="更新日期" :width="120">
+            <template slot-scope="scope">
+                <span>{{moment(parseInt(scope.row.updateDate)).format('YYYY-MM-DD')}}</span>
+            </template>
+        </el-table-column>
+        <el-table-column  label="操作" :width="200">
+            <template slot-scope="scope">
+                <el-button v-if="false">修改</el-button>
+                <el-button @click="onDeleteItem( $event, scope.row.id, scope )">删除</el-button>
+            </template>
+        </el-table-column>
+
+      </el-table>
+    </el-main>
+		<el-pagination
+		  v-if="listData.length && !loading && listTotal > listPageSize"
+		  background
+		  layout="prev, pager, next"
+		  :total="listTotal"
+		  :page-size="listPageSize"
+		  :current-page="listCurPage"
+		  @current-change="curListChange"
+		  >
+		</el-pagination>
+
+  </el-container>
+</template>
+
+<style>
+.el-header {
+    background-color: #B3C0D1;
+    color: #333;
+    line-height: 60px;
+}
+
+.el-header .el-row {
+    margin: 0 auto;
+}
+
+.el-aside {
+    color: #333;
+}
+
+.el-pagination {
+    text-align: right;
+    padding: 10px;
+}
+</style>
+
+<script>
+
+import moment from '@src/chrome/utils/moment.js'
+import config from '@src/chrome/config'
+
+import dataMixin from '@src/mixin/data.js'
+
+const packInfo = require( '@root/package.json' )
+
+export default {
+    mixins: [ dataMixin ]
+    , data() {
+        return {
+            packInfo: packInfo
+        }
+    }
+    , mounted(){
+        let p = this;
+		this.updateFullList( 1, this.$route.query.id );
+    }
+    , methods: {
+        moment
+		, afterUpdateList(){
+			this.loading = false;
+
+            if( ( this.listTotal > this.listPageSize ) ){
+                this.paddingMain = 'padding-bottom: 50px;'
+            }
+		}
+        , onDeleteItem( evt, id, item ){
+            this.loading = 1;
+            this.deleteItem( id ).then( ( )=> {
+                for( let i = 0, j = this.listData.length; i < j; i++ ){
+                    let tmp = this.listData[ i ];
+                    if( tmp.id == id ){
+                        this.listData.splice( i, 1 );
+                        this.loading = 0;
+                        break;
+                    }
+                }
+                if( !this.listData.legnth ){
+                    this.updateFullList( 1 );
+                }
+            }).catch( err => {
+                this.loading = 0;
+            });
+        }
+    }
+
+};
+</script>

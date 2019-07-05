@@ -1,0 +1,25 @@
+{
+    "name": "save-anywhere"
+    , "version": "1.0"
+    , "description": "save your selection text"
+    , "manifest_version": 2
+    , "browser_action": {
+        "default_popup": "popup.html"
+        , "default_icon": "./assets/img/save-everywhere16.png"
+    }
+    , "commands": {
+    }
+    , "background": {
+        "page": "./chrome/background.html"
+    }
+    , "permissions": [ "activeTab", "declarativeContent", "storage", "contextMenus"]
+    , "options_page": "index.html"
+    , "homepage_url": "https://github.com/hnjd-fe/chrome-plugin-save-anywhere"
+    , "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+    , "icons": {
+      "16": "./assets/img/save-everywhere16.png",
+      "32": "./assets/img/save-everywhere32.png",
+      "48": "./assets/img/save-everywhere48.png",
+      "128": "./assets/img/save-everywhere128.png"
+    }
+}

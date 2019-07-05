@@ -1,0 +1,22 @@
+{
+  "active": true,
+  "audible": false,
+  "autoDiscardable": true,
+  "discarded": false,
+  "favIconUrl": "",
+  "height": 946,
+  "highlighted": true,
+  "id": 538,
+  "incognito": false,
+  "index": 0,
+  "mutedInfo": {
+    "muted": false
+  },
+  "pinned": false,
+  "selected": true,
+  "status": "complete",
+  "title": "扩展程序",
+  "url": "chrome://extensions/",
+  "width": 932,
+  "windowId": 29
+}
