@@ -1,6 +1,6 @@
 # chrome-plugin-save-anywhere
 
-chrome browser plugin - save your seleciton in anywhere
+chrome browser plugin - save your selection in anywhere
 
 
 
