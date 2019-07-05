@@ -17,4 +17,4 @@ chrome browser plugin - save selection text in anywhere
 ## publish
   yarn build 
   
-  # output dir: /save-anywhere/
+  //output dir: ./save-anywhere/
