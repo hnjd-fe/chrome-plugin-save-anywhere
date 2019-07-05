@@ -2,7 +2,7 @@
 
 chrome browser plugin - save selection text in anywhere
 
-# develop how
+# develop 
 
 ## init
   yarn
@@ -17,4 +17,4 @@ chrome browser plugin - save selection text in anywhere
 ## publish
   yarn build 
   
-  all static file in /save-anywhere/
+  //output dir: ./save-anywhere/
