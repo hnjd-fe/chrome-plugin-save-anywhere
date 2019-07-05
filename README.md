@@ -24,7 +24,7 @@ chrome browser plugin - save selection text in anywhere
 
 ![item_search.jpeg](./static/item_search.jpeg)
 
-## step 6 - get saved item detail
+## step 6 - item detail
 
 ![item_detail.jpeg](./static/item_detail.jpeg)
 
