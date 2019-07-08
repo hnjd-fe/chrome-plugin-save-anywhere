@@ -2,6 +2,9 @@
 import parseBool from 'parseBoolean';
 
 let devMode = parseBool( localStorage.getItem( 'devMode' ) );
+let restoreClean = parseBool( localStorage.getItem( 'restoreClean' ) );
+
+//restoreClean = true;
 
 export default {
     devMode
@@ -11,4 +14,10 @@ export default {
 		localStorage.setItem( 'devMode', val );
 	}
 	, updateDevModeEventName: 'devModeChange' 
+
+    , restoreClean
+	, updateRestoreClean( val, _this ){
+		this.restoreClean = val;
+		localStorage.setItem( 'restoreClean', val );
+	}
 }
