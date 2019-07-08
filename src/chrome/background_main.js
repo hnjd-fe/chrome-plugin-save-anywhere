@@ -84,7 +84,7 @@ function main(){
 							config.dbName,{   
 								type: 'basic', 
 								iconUrl: '../assets/img/save-everywhere48.png', 
-								title: `${config.dbName} copy done!`, 
+								title: `${config.dbName} save done!`, 
 								message: `${info.selectionText}`
 							},
 							function() {
