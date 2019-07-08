@@ -16,19 +16,24 @@
                     <i class="el-icon-upload"></i>导入/导出
                   </el-menu-item>
                 </router-link>
-                <router-link to="dataManage.html">
-                  <el-menu-item index="3">
+                <router-link to="dataManage.html" v-if="devMode">
+                  <el-menu-item index="3" >
                     <i class="el-icon-data-board"></i>数据管理
                   </el-menu-item>
                 </router-link>
-                <el-link href="popup.html" target="_save_anywhere_popup">
-                  <el-menu-item index="3">
+                <el-link href="popup.html" target="_save_anywhere_popup" v-if="devMode">
+                  <el-menu-item index="4">
                     <i class="el-icon-folder-opened"></i>popup 页面 
                   </el-menu-item>
                 </el-link>
+                <router-link to="setting.html">
+                  <el-menu-item index="5">
+                    <i class="el-icon-setting"></i>设置
+                  </el-menu-item>
+                </router-link>
             </el-menu>
           </el-aside>
-            <router-view></router-view>
+            <router-view @[this.globalVar.updateDevModeEventName]="devModeChange"></router-view>
         </el-container>
   </div>
 </template>
@@ -54,8 +59,21 @@ body {
 window.name = '_save_anywhere_index';
 
 export default {
-    components: {
+	data() {
+		return {
+            devMode: this.globalVar.devMode
+		}
+	}
+    , components: {
     }
+    , computed: {
+        
+    }
+	, methods: {
+		devModeChange( val ){
+			this.devMode = val;
+		}
+	}
 }
 </script>
 

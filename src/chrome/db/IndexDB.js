@@ -1,5 +1,3 @@
-console.log( 'from indexedDB.js', Date.now() )
-
 import BaseDB from './BaseDB.js'
 import Dexie from '../utils/dexie.js'
 import md5 from '../utils/md5.js'

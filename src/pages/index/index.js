@@ -10,6 +10,9 @@ import router from './router';
 import routes from './routes.js';
 import databaseInfo from '@src/components/databaseInfo.vue'
 
+import globalVar from '@src/globalVar.js';
+
+Vue.prototype.globalVar = globalVar;
 router.addRoutes(routes);
 
 Vue.use(ElementUI)
