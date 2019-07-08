@@ -216,10 +216,13 @@ export default class IndexDB extends BaseDB {
             let r = new FileReader( );
             r.readAsText( file.raw )
             r.onload = ()=>{
-                console.log( r.result )
+                let importData = { src: JSON.parse( r.result ) };
+                console.log( importData )
+
                 let db = this.getDB();
                 db.open().then( ()=>{
                     var idb_db = db.backendDB();
+                    /*
                     IDBExportImport.clearDatabase(idb_db, function(err) {
                         IDBExportImport.importFromJsonString(idb_db, r.result, function(err) {
                             if (err){
@@ -230,6 +233,7 @@ export default class IndexDB extends BaseDB {
                             }
                         });
                     });
+                    */
                 } )
             }
         } )
