@@ -27,6 +27,7 @@
     "less": "3.8.1",
     "less-loader": "4.1.0",
     "lodash.merge": "^4.6.1",
+    "parseboolean": "1.0.0",
     "progress-bar-webpack-plugin": "^1.11.0",
     "qs": "6.5.2",
     "request": "^2.88.0",

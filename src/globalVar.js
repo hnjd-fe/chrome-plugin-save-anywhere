@@ -1,20 +1,7 @@
 
-let devMode = localStorage.getItem( 'devMode' ) || false;
+import parseBool from 'parseBoolean';
 
-if( typeof devMode == 'string' ){
-    switch( devMode ){
-        case 'true': 
-        case '1': 
-        {
-            devMode = true;
-            break;
-        }
-        default: {
-            devMode = false;
-            break;
-        }
-    }
-}
+let devMode = parseBool( localStorage.getItem( 'devMode' ) );
 
 export default {
     devMode
