@@ -42,18 +42,42 @@ main();
 
 function addNote(info, tab) {
 
-	let note = [ tab.title + info.selectionText ].join( ' - ' )
+
+	let md5 = [ tab.title + info.selectionText ].join( ' - ' )
     let data = {
-		note: `${note}`
+		note: `info.selectionText`
 		, siteUrl: tab.url
 		, siteTitle: tab.title
-		, md5: md5( note )
+		, md5: md5
 		, width: tab.width.toString()
 		, height: tab.height.toString()
 	}
-	console.log( 'addNote', Date.now(), data );
 
-	return db.add( data );
+
+	return new Promise( ( resolve, reject ) => {
+		try{
+			chrome.tabs.executeScript( {
+				code: "window.getSelection().toString();"
+			}, function(selection) {
+				data.note = selection[0];
+				data.md5 = [ data.title + data.note ].join( ' - ' ) 
+
+				db.add( data ).then( ( )=> {
+					resolve( data );
+				}).catch( (err) => {
+					reject( err );
+				});
+
+			});
+		}catch(ex){
+			db.add( data ).then( ( )=> {
+				resolve( data );
+			}).catch( (err) => {
+				reject( err );
+			});
+
+		}
+	});
 }
 
 let copyNoti;
@@ -77,6 +101,7 @@ function main(){
     */
 
     chrome.contextMenus.onClicked.addListener( function(info, tab){
+
         switch( info.menuItemId ){
             case config.dbName: {
                 addNote( info, tab ).then( (data)=>{
@@ -85,7 +110,7 @@ function main(){
 								type: 'basic', 
 								iconUrl: '../assets/img/save-everywhere48.png', 
 								title: `${config.dbName} save done!`, 
-								message: `${info.selectionText}`
+								message: `${data.note}`
 							},
 							function() {
 								console.log( 'notification done' );
