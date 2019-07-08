@@ -41,19 +41,22 @@ main();
 */
 
 function addNote(info, tab) {
-	console.log( 'addNote', Date.now() );
 
 	let note = [ tab.title + info.selectionText ].join( ' - ' )
-
-	db.add( {
-		note: note
+    let data = {
+		note: `${note}`
 		, siteUrl: tab.url
 		, siteTitle: tab.title
 		, md5: md5( note )
 		, width: tab.width.toString()
 		, height: tab.height.toString()
-	} );
+	}
+	console.log( 'addNote', Date.now(), data );
+
+	return db.add( data );
 }
+
+let copyNoti;
 
 function main(){
     if( typeof chrome == 'undefined' ) return;
@@ -76,7 +79,23 @@ function main(){
     chrome.contextMenus.onClicked.addListener( function(info, tab){
         switch( info.menuItemId ){
             case config.dbName: {
-                addNote( info, tab );
+                addNote( info, tab ).then( (data)=>{
+						copyNoti = chrome.notifications.create(
+							config.dbName,{   
+								type: 'basic', 
+								iconUrl: '../assets/img/save-everywhere48.png', 
+								title: `${config.dbName} copy done!`, 
+								message: `${info.selectionText}`
+							},
+							function() {
+								console.log( 'notification done' );
+								chrome.notifications.clear( config.dbName, ()=>{
+									console.log( 'clear done', Date.now() );
+								});
+							} 
+						);
+					}
+				);
                 break;
             }
         }

@@ -12,7 +12,7 @@
     , "background": {
         "page": "./chrome/background.html"
     }
-    , "permissions": [ "activeTab", "declarativeContent", "storage", "contextMenus"]
+    , "permissions": [ "activeTab", "declarativeContent", "storage", "contextMenus", "notifications"]
     , "options_page": "index.html"
     , "homepage_url": "https://github.com/hnjd-fe/chrome-plugin-save-anywhere"
     , "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
