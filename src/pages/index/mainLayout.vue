@@ -6,7 +6,8 @@
                 <span>
                     <i class="el-icon-logo" style="margin-right: 15px"></i>
                 </span>
-                <span>{{packInfo.name}}</span>
+                <label style="font-weight: bold; font-size: 16px;">{{packInfo.name}}</label>
+                <span>{{$t('totalLabel')}} </span><span>{{listTotal}}</span>
             </el-col>
             <el-col :span="14" style="text-align:right;">
                   <el-input

@@ -1,8 +1,8 @@
 <template>
     <div>
-        <span>数据库: {{ config.dbName  }}</span>
-        , <span>数据表: {{ config.dbDataTableName }}</span>
-        , <span>数据总数: {{ total }}</span>
+        <span>{{$t('databaseLabel')}} {{ config.dbName  }}</span>
+        , <span>{{$t('dataTableLabel')}} {{ config.dbDataTableName }}</span>
+        , <span>{{$t('totalLabel')}} {{ total }}</span>
     </div>
 </template>
 

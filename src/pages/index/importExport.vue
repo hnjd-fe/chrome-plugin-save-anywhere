@@ -5,7 +5,8 @@
             <databaseInfo ref="databaseInfo"></databaseInfo>
         </el-row>
         <el-row>
-            <el-button type="primary" @click="backup()" style="width:180px;">生成备份文件<i class="el-icon-download el-icon--right"></i></el-button>
+            <el-button type="primary" @click="backup()" style="width:180px;">
+                {{$t('backupData')}}<i class="el-icon-download el-icon--right"></i></el-button>
         </el-row>
         <el-row >
             <el-col :span="10" style="width:190px;">
@@ -18,13 +19,13 @@
                   :multiple="false"
                   :limit="1"
                   :auto-upload="false">
-                      <el-button slot="trigger" type="primary" style="width:180px;">从备份文件恢复<i class="el-icon-upload2 el-icon--right"></i></el-button>
-                      <div slot="tip" class="el-upload__tip">只能恢复.josn文件</div>
+                      <el-button slot="trigger" type="primary" style="width:180px;">{{$t('restoreData')}}<i class="el-icon-upload2 el-icon--right"></i></el-button>
+                      <div slot="tip" class="el-upload__tip">{{$t('restoreDataDesc')}}</div>
                   </el-upload>
             </el-col>
             <el-col :span="6" style="line-height:40px;">
                   <el-checkbox 
-                      label="清空数据" 
+                      :label="$t('cleanData')" 
                       v-model="restoreClean"
                       @change="updateRestoreClean"
                   ></el-checkbox>
