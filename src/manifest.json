@@ -1,5 +1,6 @@
 {
     "name": "save-anywhere"
+    , "short_name": "note that"
     , "version": "1.0"
     , "description": "save selection text"
     , "manifest_version": 2
@@ -13,8 +14,7 @@
         "page": "./chrome/background.html"
     }
     , "permissions": [ 
-			"activeTab"
-			, "tabs"
+			"tabs"
 			, "windows"
 			, "declarativeContent"
 			, "storage"

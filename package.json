@@ -11,8 +11,9 @@
   "scripts": {
     "build": "rm -rf ./save-anywhere && webpack --config scripts/config/webpack.config.prod.js && cp ./src/manifest.json ./save-anywhere && npm run finishbuild",
     "serve": "cross-env NODE_ENV=development webpack-dev-server --config scripts/config/webpack.config.dev.js --hot --inline --host 0.0.0.0 --disable-host-check --history-api-fallback",
-    "finishbuild": "cp -rf ./src/chrome ./save-anywhere && cp -rf ./src/manifest.json ./save-anywhere/manifest.json",
-    "backup": "cp -rf ./save-anywhere/chrome ./src/ && cp -rf ./save-anywhere/manifest.json ./src/manifest.json"
+    "finishbuild": "rm -rf ./save-anywhere/icons*/manifest.* && cp -rf ./src/chrome ./save-anywhere && cp -rf ./src/manifest.json ./save-anywhere/manifest.json",
+    "backup": "cp -rf ./save-anywhere/chrome ./src/ && cp -rf ./save-anywhere/manifest.json ./src/manifest.json",
+    "packzip": "rm -rf save-anywhere.zip && zip -r save-anywhere.zip ./save-anywhere"
   },
   "dependencies": {
     "awesome-typescript-loader": "^5.2.1",
