@@ -29,7 +29,7 @@ const lang = {
         "setting": "设置"
 
 		//index
-		, "searchPlaceholder": "请输入搜索内容"
+		, "searchPlaceholder": "请输入内容"
 		, "note": "文摘"
 		, "updateDate": "更新日期"
 		, "operation": "操作"
