@@ -8,27 +8,28 @@
               >
                 <router-link to="index.html">
                   <el-menu-item index="1">
-                    <i class="el-icon-s-home"></i>主页
+                    <i class="el-icon-s-home"></i>{{$t('mainPage')}}
                   </el-menu-item>
                 </router-link>
                 <router-link to="importExport.html">
                   <el-menu-item index="2">
-                    <i class="el-icon-upload"></i>导入/导出
+                    <i class="el-icon-upload"></i>{{$t('importExport')}}
                   </el-menu-item>
                 </router-link>
                 <router-link to="dataManage.html" v-if="devMode">
                   <el-menu-item index="3" >
-                    <i class="el-icon-data-board"></i>数据管理
+                    <i class="el-icon-data-board"></i>{{$t('dataManage')}}
+
                   </el-menu-item>
                 </router-link>
                 <el-link href="popup.html" target="_save_anywhere_popup" v-if="devMode">
                   <el-menu-item index="4">
-                    <i class="el-icon-folder-opened"></i>popup 页面 
+                    <i class="el-icon-folder-opened"></i>{{$t('popupPage')}} 
                   </el-menu-item>
                 </el-link>
                 <router-link to="setting.html">
                   <el-menu-item index="5">
-                    <i class="el-icon-setting"></i>设置
+                    <i class="el-icon-setting"></i>{{$t('setting')}}
                   </el-menu-item>
                 </router-link>
             </el-menu>
