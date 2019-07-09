@@ -211,66 +211,62 @@ export default class IndexDB extends BaseDB {
             } )
         });
     }
-    restore( file, cleanData  ){
+    restore( result, cleanData  ){
         return new Promise( ( resolve, reject ) => {
-            let r = new FileReader( );
-            r.readAsText( file.raw )
-            r.onload = ()=>{
 
-                let db = this.getDB();
-                db.open().then( ()=>{
-                    var idb_db = db.backendDB();
-                    if( cleanData ){
-                        IDBExportImport.clearDatabase(idb_db, function(err) {
-                            IDBExportImport.importFromJsonString(idb_db, r.result, function(err) {
-                                if (err){
-                                    console.error( err );
-                                    reject( err  );
-                                }else{
-                                    resolve( r.result );
-                                }
-                            });
+            let db = this.getDB();
+            db.open().then( ()=>{
+                var idb_db = db.backendDB();
+                if( cleanData ){
+                    IDBExportImport.clearDatabase(idb_db, function(err) {
+                        IDBExportImport.importFromJsonString(idb_db, result, function(err) {
+                            if (err){
+                                console.error( err );
+                                reject( err  );
+                            }else{
+                                resolve( result );
+                            }
                         });
-                    }else{
-                        let importData = { src: JSON.parse( r.result ), map: {} };
-                        let newData = [];
+                    });
+                }else{
+                    let importData = { src: JSON.parse( result ), map: {} };
+                    let newData = [];
 
-                        if( importData.src && importData.src.notes && importData.src.notes.length ){
+                    if( importData.src && importData.src.notes && importData.src.notes.length ){
 
-                            db[config.dbDataTableName].toArray().then( ( data )=>{
-                                data.map( ( sitem, six ) => {
-                                    importData.map[ sitem.md5 ] = sitem;
-                                });
-
-                                importData.src.notes.map( ( item, ix ) => {
-                                    delete item.id;
-                                    if( !(item.md5 in importData.map) ){
-                                        newData.push( item );
-                                        console.log( 'newItem:', item );
-                                    }
-                                });
-
-                                if( !newData.length ){
-                                    resolve( newData );
-                                    return;
-                                }
-
-                                db[config.dbDataTableName].bulkAdd( newData ).then(function() {
-                                    resolve( newData )
-                                }).catch(function (e) {
-                                    console.error("resolve Error: " + (e.stack || e));
-                                    reject( e )
-                                });
-
-
+                        db[config.dbDataTableName].toArray().then( ( data )=>{
+                            data.map( ( sitem, six ) => {
+                                importData.map[ sitem.md5 ] = sitem;
                             });
 
-                        }
+                            importData.src.notes.map( ( item, ix ) => {
+                                delete item.id;
+                                if( !(item.md5 in importData.map) ){
+                                    newData.push( item );
+                                    console.log( 'newItem:', item );
+                                }
+                            });
+
+                            if( !newData.length ){
+                                resolve( newData );
+                                return;
+                            }
+
+                            db[config.dbDataTableName].bulkAdd( newData ).then(function() {
+                                resolve( newData )
+                            }).catch(function (e) {
+                                console.error("resolve Error: " + (e.stack || e));
+                                reject( e )
+                            });
+
+
+                        });
+
                     }
-                    /*
-                    */
-                } )
-            }
+                }
+                /*
+                */
+            } )
         } )
     }
 }

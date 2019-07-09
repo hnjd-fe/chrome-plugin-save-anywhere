@@ -59,70 +59,97 @@ export default {
             , restoreClean: this.globalVar.restoreClean
         }
     }
-    , computed: {
-
-    }
     , methods: {
         updateRestoreClean( val ){
             this.globalVar.updateRestoreClean( val );
         }
         , handleChange(file) {
-            const h = this.$createElement;
             if( this.restoreLock  ){
                 this.$message({
-                  message: '数据导入中，请稍候...',
+                  message: this.$t('importingInfo'),
                   type: 'warning'
                 });
                 return;
             }
+
             this.restoreLock = 1;
             this.$message({
-              message: '数据正在导入，请稍候...',
+              message: this.$t('importNowInfo'),
               type: 'info'
             });
 
-            setTimeout( ()=>{
-                db.restore(file, this.restoreClean ).then( ()=>{
-                    this.restoreLock = 0;
-                    try{  
-                        this.$refs['upload'].clearFiles();
-                    }catch(ex){
+            let r = new FileReader( );
 
-                    }
+            r.readAsText( file.raw )
+
+            r.onload = ()=>{
+                if( !r.result ){
                     this.$message({
-                      message: '恭喜你，数据导入成功',
-                      type: 'success'
+                      message: this.$t('fileEmptyInfo'),
+                      type: 'warning'
                     });
-                    this.updateTotal();
-                } ).catch( ()=>{
+
+                    this.$refs.upload.clearFiles();
                     this.restoreLock = 0;
+                    return;
+                }
+
+                let result = JSON.parse( r.result );
+                if( !( result && result.notes && result.notes.length ) ){
                     this.$message({
-                        message: '数据导入失败',
-                        type: 'error'
+                      message: this.$t('dataEmptyInfo'),
+                      type: 'warning'
                     });
-                    this.updateTotal();
-                } );
-            }, config.operationDelayMs )
+
+                    this.$refs.upload.clearFiles();
+                    this.restoreLock = 0;
+                    return;
+                }
+
+                setTimeout( ()=>{
+                    db.restore( r.result, this.restoreClean ).then( ()=>{
+                        this.restoreLock = 0;
+                        try{  
+                            this.$refs['upload'].clearFiles();
+                        }catch(ex){
+
+                        }
+                        this.$message({
+                          message: this.$t('importSuccessInfo'),
+                          type: 'success'
+                        });
+                        this.updateTotal();
+                    } ).catch( ()=>{
+                        this.restoreLock = 0;
+                        this.$message({
+                            message: this.$t('importErrorInfo'),
+                            type: 'error'
+                        });
+                        this.updateTotal();
+                    } );
+                }, config.operationDelayMs )
+
+            };
         }
         , backup() {
             const h = this.$createElement;
             if( this.backupLock  ){
                 this.$message({
-                  message: '数据备份中，请稍候...',
+                  message: this.$t('backupingInfo'),
                   type: 'warning'
                 });
                 return;
             }
             this.backupLock = 1;
             this.$message({
-              message: '数据正在备份，请稍候...',
+              message: this.$t('backupNowInfo'),
               type: 'info'
             });
             setTimeout( ()=>{
                 db.backup().then( ()=>{
                    this.backupLock = 0;
                     this.$message({
-                      message: '恭喜你，数据备份成功',
+                      message: this.$t('backupSuccessInfo'),
                       type: 'success'
                     });
                     this.updateTotal();
@@ -130,7 +157,7 @@ export default {
                 } ).catch( ()=>{
                    this.backupLock = 0;
                    this.$message({
-                      message: '数据备份失败',
+                      message: this.$t('backupErrorInfo'),
                       type: 'error'
                     });
                     this.updateTotal();
