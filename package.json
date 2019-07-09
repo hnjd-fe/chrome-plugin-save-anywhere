@@ -4,7 +4,6 @@
   "version": "1.0.1",
   "homepage": "https://github.com/hnjd-fe/chrome-plugin-save-anywhere",
   "author": "suches<suches@btbtd.org>",
-  "private": true,
   "engines": {
     "node": ">=6",
     "npm": ">=3"
