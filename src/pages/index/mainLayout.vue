@@ -10,7 +10,7 @@
             </el-col>
             <el-col :span="14" style="text-align:right;">
                   <el-input
-                      placeholder="请输入内容"
+                      :placeholder="$t('searchPlaceholder')"
                       v-model="searchText"
                       @input="onTextInput"
                       >
@@ -25,7 +25,7 @@
     >
       <el-table :data="listData">
         <el-table-column prop="id" label="ID" width="80"></el-table-column>
-        <el-table-column  label="文摘">
+        <el-table-column  :label="$t('note')">
             <template slot-scope="scope">
             <div>
                 <a :href="scope.row.siteUrl" target="_blank">
@@ -40,15 +40,15 @@
             </div>
             </template>
         </el-table-column>
-        <el-table-column  label="更新日期" :width="120">
+        <el-table-column  :label="$t('updateDate')" :width="180">
             <template slot-scope="scope">
-                <span>{{moment(parseInt(scope.row.updateDate)).format('YYYY-MM-DD')}}</span>
+                <span>{{moment(parseInt(scope.row.updateDate)).format('YYYY-MM-DD HH:mm:ss')}}</span>
             </template>
         </el-table-column>
-        <el-table-column  label="操作" :width="200">
+        <el-table-column  :label="$t('operation')" :width="200">
             <template slot-scope="scope">
-                <el-button v-if="false">修改</el-button>
-                <el-button @click="onDeleteItem( $event, scope.row.id, scope )">删除</el-button>
+                <el-button v-if="false">{{$t('modify')}}</el-button>
+                <el-button @click="onDeleteItem( $event, scope.row.id, scope )">{{$t('delete')}}</el-button>
             </template>
         </el-table-column>
 

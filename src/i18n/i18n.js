@@ -17,10 +17,17 @@ const messages = {
 }
 
 function fixLocale( lang ){
+	let zh = clone( lang.zh ), en = clone( lang.en );
+	lang.en = deepmerge( zh, lang.en );
+	lang.zh  = deepmerge( en, lang.zh );
+
     lang['zh-CN'] = lang['zh']
     lang['en-US'] = lang['en']
 }
 
+function clone( item ){
+	return JSON.parse( JSON.stringify( item ) )
+}
 
 export default {
     supportLang: {

@@ -2,7 +2,7 @@
 <el-container>
     <el-main>
 		<el-form ref="form" :model="form" label-width="120px">
-			<el-form-item label="选择语言:">
+			<el-form-item :label="$t('language')">
 				<el-select v-model="form.lang" 
 					@change="localeChange"
 					>
@@ -15,9 +15,9 @@
 				</el-select>
 			</el-form-item>
 
-			<el-form-item label="开发者模式:">
+			<el-form-item :label="$t('devmode')">
 				<el-checkbox 
-					label="显示开发者功能" 
+					:label="$t('devmodeDesc')" 
                     v-model="form.devMode"
 					@change="devModeChange"
 				></el-checkbox>
