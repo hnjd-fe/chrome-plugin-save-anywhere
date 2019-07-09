@@ -3,7 +3,9 @@
     <el-main>
 		<el-form ref="form" :model="form" label-width="120px">
 			<el-form-item label="选择语言:">
-				<el-select v-model="form.lang" placeholder="请选择">
+				<el-select v-model="form.lang" 
+					@change="localeChange"
+					>
 					<el-option
 						v-for="(item,key) in langs"
 						:key="key"
@@ -56,6 +58,11 @@ export default {
 	, methods: {
 		devModeChange( val ) {
 			this.globalVar.updateDevMode( val, this )
+		}
+		, localeChange( val ) {
+			i18nConfig.updateLocale( val );
+			//console.log( this.$i18n );
+			this.$i18n.locale = val;
 		}
 	}
 	, mounted() {

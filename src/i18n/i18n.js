@@ -23,7 +23,11 @@ function fixLocale( lang ){
 
 
 export default {
-    init( locale = zh, page = 'index' ) {
+    supportLang: {
+        'zh': '中文'
+        , 'en': 'English'
+    }
+    , init( locale = zh, page = 'index' ) {
         let json = require( `./pages/${page}/index.js` );
         let merged = deepmerge( messages, json );
         fixLocale( merged );
@@ -41,8 +45,8 @@ export default {
 		return locale;
     }
 
-    , supportLang: {
-        'zh': '中文'
-        , 'en': 'English'
-    }
+	, updateLocale( lang ) {
+		localStorage.setItem( 'locale', lang );
+		return lang;
+	}
 };
