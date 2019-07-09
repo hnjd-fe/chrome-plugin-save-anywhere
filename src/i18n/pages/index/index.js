@@ -1,19 +1,13 @@
 
 const lang = {
     "en": {
-        "mainPage": "save-anywhere",
-        "importExport": "import/export",
-        "dataManage": "data manage",
-        "popupPage": "popup page",
-        "setting": "setting"
 
 		//common
-		, "databaseLabel": "database:"
+		"databaseLabel": "database:"
 		, "dataTableLabel": "table:"
 		, "totalLabel": "total items:"
 
 		//index
-		, "searchPlaceholder": "search text"
 		, "note": "notes"
 		, "updateDate": "latest update"
 		, "operation": "operation"
@@ -28,24 +22,22 @@ const lang = {
 		//import/export
 		, "backupData": "backup datatabse"
 		, "restoreData": "restore database"
-		, "restoreDataDesc": "only .json file"
+		, "restoreDataDesc": "only file of .json"
 		, "cleanData": "clear data"
+
+		//data manage
+		, "generateDataLabel": "generate test data"
+		, "cleanAllData": "clean all data"
 
     }
     , "zh": {
-        "mainPage": "save-anywhere",
-        "importExport": "导入/导出",
-        "dataManage": "数据管理",
-        "popupPage": "popup 页面",
-        "setting": "设置"
 
 		//common
-		, "databaseLabel": "数据库:"
+		"databaseLabel": "数据库:"
 		, "dataTableLabel": "数据表:"
 		, "totalLabel": "数据总数:"
 
 		//index
-		, "searchPlaceholder": "请输入内容"
 		, "note": "文摘"
 		, "updateDate": "更新日期"
 		, "operation": "操作"
@@ -62,6 +54,10 @@ const lang = {
 		, "restoreData": "从备份文件恢复"
 		, "restoreDataDesc": "只能恢复.josn文件"
 		, "cleanData": "清空数据"
+
+		//data manage
+		, "generateDataLabel": "生成数据"
+		, "cleanAllData": "清空数据"
     }
 }
 

@@ -7,6 +7,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import localeEn from 'element-ui/lib/locale/lang/en'
 import App from './App.vue'
 import store from '@src/store';
 import router from './router';
@@ -21,7 +22,13 @@ Vue.prototype.globalVar = globalVar;
 
 Vue.use( VueI18n );
 
-Vue.use(ElementUI)
+let eleSetting = {}
+
+if( i18nConfig.getLocale() == 'en' ){
+	eleSetting.locale = localeEn;
+}
+
+Vue.use(ElementUI, eleSetting )
 Vue.component( 'databaseInfo', databaseInfo)
 
 Vue.use(VueAxios, axios)

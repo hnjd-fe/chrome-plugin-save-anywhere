@@ -40,6 +40,10 @@ import db from '@src/chrome/db.js'
 import dataMixin from '@src/mixin/data.js'
 import i18nConfig from '@src/i18n/i18n.js'
 
+import locale from 'element-ui/lib/locale'
+import langEn from 'element-ui/lib/locale/lang/en'
+import langZh from 'element-ui/lib/locale/lang/zh-CN'
+
 const packInfo = require( '@root/package.json' )
 
 export default {
@@ -63,6 +67,17 @@ export default {
 			i18nConfig.updateLocale( val );
 			//console.log( this.$i18n );
 			this.$i18n.locale = val;
+
+			switch( val ){
+				case 'en': {
+					locale.use( langEn )
+					break;
+				}
+				default: {
+					locale.use( langZh )
+					break;
+				}
+			}
 		}
 	}
 	, mounted() {

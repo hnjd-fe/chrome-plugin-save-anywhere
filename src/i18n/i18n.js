@@ -4,16 +4,26 @@ import deepmerge from 'deepmerge'
 
 // 准备翻译的语言环境信息
 const messages = {
-  en: {
-    message: {
-      hello: 'hello world'
-    }
-  },
-  zh: {
-    message: {
-      hello: '你好，世界'
-    }
-  }
+	en: {
+        "mainPage": "save-anywhere",
+        "importExport": "import/export",
+        "dataManage": "data manage",
+        "popupPage": "popup page",
+        "setting": "setting"
+
+		, "searchPlaceholder": "search text"
+		, "nodata": "nothing in there"
+	},
+	zh: {
+        "mainPage": "save-anywhere",
+        "importExport": "导入/导出",
+        "dataManage": "数据管理",
+        "popupPage": "popup 页面",
+        "setting": "设置"
+
+		, "searchPlaceholder": "请输入内容"
+		, "nodata": "暂无数据"
+	}
 }
 
 function fixLocale( lang ){

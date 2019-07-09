@@ -3,7 +3,7 @@
   <el-container>
       <el-header>
           <el-input
-              placeholder="请输入内容"
+              :placeholder="$t('searchPlaceholder')"
               v-model="searchText"
               @input="onTextInput"
               >
@@ -38,8 +38,8 @@
             </el-col>
             <el-col :span="4" class="source">
                 <div>
-                    <a :href="'index.html?id='+item.id" title="来源详情" target="_blank">
-                        <span>来源详情</span>
+                    <a :href="'index.html?id='+item.id" :title="$t('source')" target="_blank">
+                        <span>{{$t('source')}}</span>
                     </a>
                 </div>
             </el-col>
@@ -49,7 +49,7 @@
 			v-if="!listData.length && !loading"
 			class="no-data"
 		>
-		暂无数据
+		{{$t('nodata')}}
 		</el-row>
 
     </el-main>
@@ -73,7 +73,10 @@
                 </el-link>
             </el-col>
             <el-col :span="12" style="text-align: right">
-                <el-link href="./index.html" target="_save_anywhere_index" style="margin-right: -10px">
+                <el-link href="./index.html" target="_save_anywhere_index" 
+                    style="margin-right: -10px"
+                    :title="$t('setting')"
+                    >
                     <i class="el-icon-setting" style="padding: 0 10px;"></i>
                 </el-link>
             </el-col>
