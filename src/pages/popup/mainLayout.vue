@@ -38,7 +38,7 @@
             </el-col>
             <el-col :span="4" class="source">
                 <div>
-                    <a :href="'index.html?id='+item.id" :title="$t('source')" target="_blank">
+                    <a :href="'index.html?id='+item.id" :title="$t('source')" target="_save_anywhere_index" >
                         <span>{{$t('source')}}</span>
                     </a>
                 </div>

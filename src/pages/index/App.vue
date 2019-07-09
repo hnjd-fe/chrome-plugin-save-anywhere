@@ -6,11 +6,11 @@
               default-active="1"
               class="el-menu-vertical-demo"
               >
-                <router-link to="index.html">
+                <el-link href="index.html" target="_save_anywhere_index">
                   <el-menu-item index="1">
                     <i class="el-icon-s-home"></i>{{$t('mainPage')}}
                   </el-menu-item>
-                </router-link>
+                </el-link>
                 <router-link to="importExport.html">
                   <el-menu-item index="2">
                     <i class="el-icon-upload"></i>{{$t('importExport')}}
@@ -54,6 +54,10 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.el-link {
+    display: block;
+}
 </style>
 
 <script>
@@ -74,6 +78,9 @@ export default {
 		devModeChange( val ){
 			this.devMode = val;
 		}
+　　　　, refresh:function(){
+　　　　　　this.$router.go(0);
+　　　　}
 	}
 }
 </script>
