@@ -55,28 +55,32 @@ function addNote(info, tab) {
 
 
 	return new Promise( ( resolve, reject ) => {
-		try{
-			chrome.tabs.executeScript( {
-				code: "window.getSelection().toString();"
-			}, function(selection) {
-				data.note = selection[0];
-				data.md5 = [ data.title + data.note ].join( ' - ' ) 
+        chrome.tabs.executeScript( {
+            code: "window.getSelection().toString();"
+        }, function(selection) {
+            try{
+                data.note = selection[0];
+                data.md5 = [ data.title + data.note ].join( ' - ' ) 
 
-				db.add( data ).then( ( )=> {
-					resolve( data );
-				}).catch( (err) => {
-					reject( err );
-				});
+                db.add( data ).then( ( )=> {
+                    resolve( data );
+                }).catch( (err) => {
+                    reject( err );
+                });
+            }catch(ex){
+                data.note = info.selectionText;
+                data.md5 = [ data.title + data.note ].join( ' - ' ) 
+                
+                db.add( data ).then( ( )=> {
+                    resolve( data );
+                }).catch( (err) => {
+                    reject( err );
+                });
 
-			});
-		}catch(ex){
-			db.add( data ).then( ( )=> {
-				resolve( data );
-			}).catch( (err) => {
-				reject( err );
-			});
+            }
 
-		}
+
+        });
 	});
 }
 
