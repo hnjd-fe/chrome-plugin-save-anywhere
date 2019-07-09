@@ -45,13 +45,13 @@ export default {
             const h = this.$createElement;
             if( this.clearDataLock  ){
                 this.$message({
-                  message: '数据清空中，请稍候...',
+                  message: this.$t('cleaningDataInfo'),
                   type: 'warning'
                 });
                 return;
             }
             this.$message({
-              message: '数据正在清空，请稍候...',
+              message: this.$t('cleanDataNowInfo'),
               type: 'info'
             });
             this.clearDataLock = 1;
@@ -59,13 +59,13 @@ export default {
                 db.clearData().then( ()=>{
                    this.clearDataLock = 0;
                     this.$message({
-                      message: '数据已经清空',
+                      message: this.$t('cleanDataSuccessInfo'),
                       type: 'success'
                     });
                     this.updateTotal();
                 } ).catch( (err)=>{
                     this.$message({
-                      message: '无法清空数据' + err,
+                      message: this.$t('cleanDataErrorInfo') + ' '  + err,
                       type: 'error'
                     });
                     this.clearDataLock = 0;
@@ -76,13 +76,13 @@ export default {
             const h = this.$createElement;
             if( this.dataGeneratorLock  ){
                 this.$message({
-                  message: '数据生成中，请稍候...',
+                  message: this.$t('producingDataInfo'),
                   type: 'warning'
                 });
                 return;
             }
             this.$message({
-              message: '正在生成数据，请稍候...',
+              message: this.$t('productDataNowInfo'),
               type: 'info'
             });
             this.dataGeneratorLock = 1;
@@ -90,13 +90,13 @@ export default {
                 db.dataGenerator().then( ()=>{
                     this.dataGeneratorLock = 0;
                     this.$message({
-                      message: '恭喜你，数据生成成功',
+                      message: this.$t('productDataSuccessInfo'),
                       type: 'success'
                     });
                     this.updateTotal();
                 } ).catch( (err)=>{
                     this.$message({
-                      message: '无法生成数据' + err,
+                      message: this.$t('productDataErrorInfo') + ' ' + err,
                       type: 'error'
                     });
                     this.dataGeneratorLock = 0;
