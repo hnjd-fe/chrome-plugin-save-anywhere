@@ -10,6 +10,9 @@
         <el-row>
             <el-button type="primary" @click="clearData()">{{$t('cleanAllData')}}<i class="el-icon-delete el-icon--right"></i></el-button>
         </el-row>
+        <el-row>
+            <el-button type="primary" @click="fixmd5()">{{$t('fixmd5')}}<i class="el-icon-finished el-icon--right"></i></el-button>
+        </el-row>
     </el-main>
 </el-container>
 </template>
@@ -32,6 +35,7 @@ export default {
     , data() {
         return {
             clearDataLock: 0
+            , fixMd5DataLock: 0
             , dataGeneratorLock: 0
             , config: config
             , totalDataNum: 0
@@ -41,7 +45,39 @@ export default {
 
     }
     , methods: {
-        clearData() {
+        fixmd5() {
+            const h = this.$createElement;
+            if( this.fixmd5DataLock  ){
+                this.$message({
+                  message: this.$t('fixmd5ingDataInfo'),
+                  type: 'warning'
+                });
+                return;
+            }
+            this.$message({
+              message: this.$t('fixmd5DataNowInfo'),
+              type: 'info'
+            });
+            this.fixmd5DataLock = 1;
+            setTimeout( ()=>{
+                db.fixmd5Data().then( ()=>{
+                   this.fixmd5DataLock = 0;
+                    this.$message({
+                      message: this.$t('fixmd5DataSuccessInfo'),
+                      type: 'success'
+                    });
+                    this.updateTotal();
+                } ).catch( (err)=>{
+                    this.$message({
+                      message: this.$t('fixmd5DataErrorInfo') + ' '  + err,
+                      type: 'error'
+                    });
+                    this.fixmd5DataLock = 0;
+                } );
+            }, 500 )
+
+        }
+        , clearData() {
             const h = this.$createElement;
             if( this.clearDataLock  ){
                 this.$message({
