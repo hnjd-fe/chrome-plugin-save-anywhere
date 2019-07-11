@@ -193,6 +193,21 @@ export default class IndexDB extends BaseDB {
         }) ;
     }
 
+    fixmd5Data (){
+        return new Promise( ( resolve, reject ) => {
+            let db = this.getDB();
+            let r = [];
+            db.transaction( 'rw', db[config.dbDataTableName], () => {
+               db[config.dbDataTableName].toCollection().modify( ( data )=>{
+                    data.md5 = md5( [ data.siteTitle + data.note ].join( ' - ' ) )
+                    r.push( data );
+                }).then( ()=>{
+                    resolve( r );
+                });;
+            });
+        });
+    }
+
     backup(){
         return new Promise( (resolve, reject) => {
             let db = this.getDB();

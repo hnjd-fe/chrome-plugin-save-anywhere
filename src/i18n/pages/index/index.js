@@ -48,6 +48,13 @@ const lang = {
         , "cleanDataNowInfo": "cleaning data, please waiting..."
         , "cleanDataSuccessInfo": "congratulation! data cleaned."
         , "cleanDataErrorInfo": "could't clean data!"
+
+        , "fixmd5": "fix md5 field"
+        , "fixmd5ingDataInfo": "fixmd5ing data in progress, please waiting..."
+        , "fixmd5DataNowInfo": "fixmd5ing data, please waiting..."
+        , "fixmd5DataSuccessInfo": "congratulation! data fixmd5ed."
+        , "fixmd5DataErrorInfo": "could't fixmd5 data!"
+
     }
     , "zh": {
 
@@ -97,6 +104,13 @@ const lang = {
         , "cleanDataNowInfo": "数据正在清空，请稍候..."
         , "cleanDataSuccessInfo": "数据已经清空"
         , "cleanDataErrorInfo": "无法清空数据"
+
+        , "fixmd5": "修复 md5 字段"
+        , "fixmd5ingDataInfo": "md5 字段修复中，请稍候..."
+        , "fixmd5DataNowInfo": "正在修复 md5 字段"
+        , "fixmd5DataSuccessInfo": "恭喜你，md5 字段修复完成"
+        , "fixmd5DataErrorInfo": "无法修复 md5 字段"
+
     }
 }
 
