@@ -42,13 +42,11 @@ main();
 
 function addNote(info, tab) {
 
-
-	let md5 = [ tab.title + info.selectionText ].join( ' - ' )
     let data = {
 		note: `info.selectionText`
 		, siteUrl: tab.url
 		, siteTitle: tab.title
-		, md5: md5
+		, md5: ''
 		, width: tab.width.toString()
 		, height: tab.height.toString()
 	}
@@ -68,7 +66,7 @@ function addNote(info, tab) {
 					code: "window.getSelection().toString();"
 				}, function(selection) {
 					data.note = selection[0];
-					data.md5 = [ data.title + data.note ].join( ' - ' ) 
+					data.md5 = md5( [ data.siteTitle + data.note ].join( ' - ' ) )
 
 					db.add( data ).then( ( )=> {
 						resolve( data );
@@ -78,7 +76,7 @@ function addNote(info, tab) {
 				});
 			} else {
                 data.note = info.selectionText;
-                data.md5 = [ data.title + data.note ].join( ' - ' ) 
+                data.md5 = md5( [ data.siteTitle + data.note ].join( ' - ' ) )
 				data.nopre = true;
                 
                 db.add( data ).then( ( )=> {
