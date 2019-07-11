@@ -58,6 +58,8 @@ function addNote(info, tab) {
 			origins: [
 				"http://*/"
 				, "https://*/"
+				, "ftp://*/"
+                , "file:///*/"
 			]
 		}, function(granted) {
 			// The callback argument will be true if the user granted the permissions.

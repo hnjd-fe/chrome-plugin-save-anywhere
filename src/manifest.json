@@ -1,7 +1,7 @@
 {
     "name": "save-anywhere"
     , "short_name": "note that"
-    , "version": "1.2"
+    , "version": "1.3"
     , "description": "save selection text"
     , "manifest_version": 2
     , "browser_action": {
@@ -26,6 +26,8 @@
     , "optional_permissions": [
         "http://*/"
         , "https://*/"
+        , "ftp://*/"
+        , "file:///*/"
     ]
     , "options_page": "index.html"
     , "homepage_url": "https://github.com/hnjd-fe/chrome-plugin-save-anywhere"
@@ -37,3 +39,4 @@
       "128": "./assets/img/save-everywhere128.png"
     }
 }
+
