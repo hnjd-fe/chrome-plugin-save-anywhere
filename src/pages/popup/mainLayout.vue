@@ -27,13 +27,13 @@
                     <a :href="item.siteUrl" :title="item.siteTitle" style="display:block;padding-left:0!important;" target="_blank">
                         <label v-html="hightlightSearch(item.siteTitle)"></label>
                     </a>
-                        <span v-html="hightlightSearch(item.note)"></span>
+                        <span v-html="hightlightSearch(item.note, 1, item)"></span>
                 </div>
                 <div v-else>
                     <a :title="item.siteTitle" style="display:block;padding-left:0!important;" >
                         <label v-html="hightlightSearch(item.siteTitle)"></label>
                     </a>
-                        <span v-html="hightlightSearch(item.note)"></span>
+                        <span v-html="hightlightSearch(item.note, 1, item)"></span>
                 </div>
             </el-col>
             <el-col :span="4" class="source">

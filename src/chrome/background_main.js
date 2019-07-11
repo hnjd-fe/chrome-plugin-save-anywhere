@@ -53,34 +53,41 @@ function addNote(info, tab) {
 		, height: tab.height.toString()
 	}
 
-
 	return new Promise( ( resolve, reject ) => {
-        chrome.tabs.executeScript( {
-            code: "window.getSelection().toString();"
-        }, function(selection) {
-            try{
-                data.note = selection[0];
-                data.md5 = [ data.title + data.note ].join( ' - ' ) 
 
-                db.add( data ).then( ( )=> {
-                    resolve( data );
-                }).catch( (err) => {
-                    reject( err );
-                });
-            }catch(ex){
+		chrome.permissions.request({
+			permissions: ['tabs'],
+			origins: [
+				"http://*/"
+				, "https://*/"
+			]
+		}, function(granted) {
+			// The callback argument will be true if the user granted the permissions.
+			if (granted) {
+				chrome.tabs.executeScript( {
+					code: "window.getSelection().toString();"
+				}, function(selection) {
+					data.note = selection[0];
+					data.md5 = [ data.title + data.note ].join( ' - ' ) 
+
+					db.add( data ).then( ( )=> {
+						resolve( data );
+					}).catch( (err) => {
+						reject( err );
+					});
+				});
+			} else {
                 data.note = info.selectionText;
                 data.md5 = [ data.title + data.note ].join( ' - ' ) 
+				data.nopre = true;
                 
                 db.add( data ).then( ( )=> {
                     resolve( data );
                 }).catch( (err) => {
                     reject( err );
                 });
-
-            }
-
-
-        });
+			}
+		});
 	});
 }
 

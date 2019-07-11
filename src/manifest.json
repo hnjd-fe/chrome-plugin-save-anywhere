@@ -14,17 +14,19 @@
         "page": "./chrome/background.html"
     }
     , "permissions": [ 
-			"tabs"
-			, "windows"
-			, "declarativeContent"
-			, "storage"
-			, "contextMenus"
-			, "notifications"
-			, "http://*/"
-			, "https://*/"
-			, "declarativeWebRequest"
-			, "webRequest"
-		]
+        "tabs"
+        , "windows"
+        , "declarativeContent"
+        , "storage"
+        , "contextMenus"
+        , "notifications"
+        , "declarativeWebRequest"
+        , "webRequest"
+    ]
+    , "optional_permissions": [
+        "http://*/"
+        , "https://*/"
+    ]
     , "options_page": "index.html"
     , "homepage_url": "https://github.com/hnjd-fe/chrome-plugin-save-anywhere"
     , "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
