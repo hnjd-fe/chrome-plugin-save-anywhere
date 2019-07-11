@@ -10,7 +10,7 @@ chrome browser plugin - save selection text in anywhere
 
 [save-anywhere.crx](https://raw.githubusercontent.com/hnjd-fe/chrome-plugin-save-anywhere/master/save-anywhere.crx)
 
-### insatll from google store
+### downlaod from google store
 
 [save-anywhere](https://chrome.google.com/webstore/detail/save-anywhere/pkmhmadaamenokoblegahibppfoeilap?hl=zh-CN)
 
