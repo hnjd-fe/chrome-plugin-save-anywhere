@@ -6,7 +6,7 @@ chrome browser plugin - save selection text in anywhere
 
 ## step 1 - download plugin
 
-### downlaod from github
+### download from github
 
 [save-anywhere.crx](https://raw.githubusercontent.com/hnjd-fe/chrome-plugin-save-anywhere/master/save-anywhere.crx)
 
