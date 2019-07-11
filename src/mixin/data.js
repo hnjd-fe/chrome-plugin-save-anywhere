@@ -58,10 +58,10 @@ let mixin = {
         , afterUpdateList( curListPage ){
         }
 
-        , hightlightSearch( text ){
+        , hightlightSearch( text, isPre, item ){
             text = text.replace( /</g, '&lt;' ).replace( />/g, '&gt;' );
 
-            text = text.replace( /[\r\n]+/g, '<br />' );
+            //text = text.replace( /[\r\n]+/g, '<br />' );
 
             if( this.searchText ){
                 let tmpSearch = this.searchText;
@@ -78,6 +78,9 @@ let mixin = {
                     ;
                 let re = new RegExp( `(${tmpSearch})`, 'ig' );
                 text = text.replace( re, '<span class="search_hl">$1</span>') 
+            }
+            if( isPre && item && !item.nopre ){
+                text = `<pre>${text}</pre>`;
             }
 
             return text;

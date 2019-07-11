@@ -34,7 +34,7 @@
                     v-html="hightlightSearch(scope.row.siteTitle)"
                     ></label>
                 </a>
-                    <span v-html="hightlightSearch(scope.row.note)"></span>
+                    <span v-html="hightlightSearch(scope.row.note, 1, scope.row )"></span>
                 <a :href="scope.row.siteUrl" target="_blank">
                     <label v-if="scope.row.siteUrl" style="display:block; margin-top:5px;">{{scope.row.siteUrl}}</label>
                 </a>

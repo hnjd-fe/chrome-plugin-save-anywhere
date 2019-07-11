@@ -79,6 +79,7 @@ function addNote(info, tab) {
 			} else {
                 data.note = info.selectionText;
                 data.md5 = [ data.title + data.note ].join( ' - ' ) 
+				data.nopre = true;
                 
                 db.add( data ).then( ( )=> {
                     resolve( data );
