@@ -17,7 +17,7 @@
                   </el-menu-item>
                 </router-link>
 
-                <router-link to="sync.html">
+                <router-link to="sync.html" v-if="false">
                   <el-menu-item index="6" >
                     <i class="el-icon-upload"></i>{{$t('sync')}}
                   </el-menu-item>
