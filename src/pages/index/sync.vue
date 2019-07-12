@@ -34,7 +34,9 @@ export default {
     , methods: {
         login() {
             let backUrl = encodeURIComponent( location.href );
-            let oauth = `http://btbtd.org/api/saveanywhere?backurl=${backUrl}`
+            let rdUrl = encodeURIComponent( 'http://btbtd.org/api/saveanywhere/' );
+            //let oauth = `http://btbtd.org/api/saveanywhere?backurl=${backUrl}`
+            let oauth = `https://github.com/login/oauth/authorize?client_id=ea39702543c52fc7f5ee&state=${backUrl}&redirect_uri=${rdUrl}`;
 
             console.log( oauth );
         }
