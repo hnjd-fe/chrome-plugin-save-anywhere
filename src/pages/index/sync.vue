@@ -6,7 +6,7 @@
         </el-row>
         <el-row>
             <el-button type="primary" @click="login" style="width:180px;">
-                {{$t('login')}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
+                {{$t('login_github')}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
         </el-row>
     </el-main>
 </el-container>
@@ -34,11 +34,10 @@ export default {
     , methods: {
         login() {
             let backUrl = encodeURIComponent( location.href );
-            let rdUrl = encodeURIComponent( 'http://btbtd.org/api/saveanywhere/' );
-            //let oauth = `http://btbtd.org/api/saveanywhere?backurl=${backUrl}`
-            let oauth = `https://github.com/login/oauth/authorize?client_id=ea39702543c52fc7f5ee&state=${backUrl}&redirect_uri=${rdUrl}`;
+            let oauth = `http://btbtd.org/api/saveanywhere?backurl=${backUrl}&logintype=github`
 
             console.log( oauth );
+            location.href = oauth;
         }
     }
     , mounted(){

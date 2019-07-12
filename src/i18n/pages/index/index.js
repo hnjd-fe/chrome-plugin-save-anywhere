@@ -57,7 +57,7 @@ const lang = {
 
         //sync
         , "sync": "sync"
-        , "login": "login"
+        , "login_github": "login github"
     }
     , "zh": {
 
