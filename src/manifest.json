@@ -7,6 +7,7 @@
     , "browser_action": {
         "default_popup": "popup.html"
         , "default_icon": "./assets/img/save-everywhere16.png"
+        , "default_title": "save-anywhere"
     }
     , "commands": {
     }
