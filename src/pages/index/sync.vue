@@ -5,11 +5,12 @@
             <databaseInfo ref="databaseInfo"></databaseInfo>
         </el-row>
         <el-row>
-            <el-button type="primary" @click="login" style="width:180px;">
+            <el-button type="primary" style="width:180px;" id="login" v-if="!token">
                 {{$t('login_github')}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
 
-                <br />
-                <iframe :src="iframeUrl" width="80%" height="500" @load="iframeOnload" ref="iframe"></iframe>
+            <el-button type="primary" style="" id="logout" v-if="token">
+                {{$t('logout_github')}} {{nickname}}@{{logintype}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
+        </el-row>
         </el-row>
     </el-main>
 </el-container>
@@ -28,36 +29,34 @@ import dataMixin from '@src/mixin/data.js'
 
 const packInfo = require( '@root/package.json' )
 
-window.addEventListener('message',function(e){
-    let data =e.data;
-    console.log( 'receive iframe data', data );
-    console.dir( e );
-},false);
-
 export default {
     mixins: [ dataMixin ]
     , data() {
         return {
-            iframeUrl: 'about:blank'
+            token: localStorage.getItem( 'token' )
+            , email: localStorage.getItem( 'email' )
+            , username: localStorage.getItem( 'username' )
+            , nickname: localStorage.getItem( 'nickname' )
+            , md5: localStorage.getItem( 'md5' )
+            , logintype: localStorage.getItem( 'logintype' )
         }
     }
     , methods: {
-        login() {
-            let backUrl = encodeURIComponent( location.href );
-            let oauth = `http://btbtd.org/api/saveanywhere?logintype=github`
-            oauth = 'http://btbtd.org/api/saveanywhere/?s=/Index/Index/pushmessage';
-
-            console.log( oauth );
-            //location.href = oauth;
-            this.iframeUrl = oauth;
-        }
-        , iframeOnload(){
-            console.log( 'onload', Date.now() );
-            console.dir( this.$refs.iframe );
+        setDataItem( key, val ){
+            if( this.$route.query[key]){
+                localStorage.setItem( key, this.$route.query[key]);
+                this.$set( this.data || {}, key, val );
+            }
         }
     }
     , mounted(){
-
+        console.log( this.token ); 
+        this.setDataItem( 'token' );
+        this.setDataItem( 'username' );
+        this.setDataItem( 'nickname' );
+        this.setDataItem( 'email' );
+        this.setDataItem( 'md5' );
+        this.setDataItem( 'logintype' );
     }
 }
 </script>
