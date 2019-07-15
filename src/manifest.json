@@ -9,8 +9,6 @@
         , "default_icon": "./assets/img/save-everywhere16.png"
         , "default_title": "save-anywhere"
     }
-    , "commands": {
-    }
     , "background": {
         "page": "./chrome/background.html"
     }
