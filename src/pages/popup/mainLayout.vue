@@ -73,6 +73,7 @@
                 </el-link>
             </el-col>
             <el-col :span="12" style="text-align: right">
+                <el-link id="login">login</el-link>
                 <el-link href="./index.html" target="_save_anywhere_index" 
                     style="margin-right: -10px"
                     :title="$t('setting')"

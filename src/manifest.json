@@ -24,25 +24,20 @@
         , "webRequest"
 		, "https://accounts.google.com/o/oauth2/token"
 		, "https://github.com/"
+		, "http://btbtd.org/api/*"
     ]
     , "optional_permissions": [
         "http://*/"
         , "https://*/"
         , "ftp://*/"
         , "file:///*/"
-        , "http://btbtd.org/api/*"
     ]
 	, "web_accessible_resources" : [
-		"oauth2/oauth2.html"
+		"chrome/utils/oauth2/oauth2.html"
 	]
 	, "content_scripts": [
 		{
-			"matches": ["http://www.google.com/robots.txt*"]
-			, "js": ["chrome/utils/oauth2/oauth2_inject.js"]
-			, "run_at": "document_start"
-		},
-		{
-			"matches": ["https://github.com/robots.txt*"]
+			"matches": ["http://btbtd.org/api/saveanywhere/token*"]
 			, "js": ["chrome/utils/oauth2/oauth2_inject.js"]
 			, "run_at": "document_start"
 		}
