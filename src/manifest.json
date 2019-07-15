@@ -16,6 +16,7 @@
     }
     , "permissions": [ 
         "tabs"
+		, "identity"
         , "windows"
         , "declarativeContent"
         , "storage"
@@ -23,14 +24,34 @@
         , "notifications"
         , "declarativeWebRequest"
         , "webRequest"
+		, "https://accounts.google.com/o/oauth2/token"
+		, "https://github.com/"
     ]
     , "optional_permissions": [
         "http://*/"
         , "https://*/"
         , "ftp://*/"
         , "file:///*/"
+        , "http://btbtd.org/api/*"
+        , "http://api.github.com/*"
+        , "https://github.com/login/oauth/*"
     ]
-    , "options_page": "index.html"
+	, "web_accessible_resources" : [
+		"oauth2/oauth2.html"
+	]
+	, "content_scripts": [
+		{
+			"matches": ["http://www.google.com/robots.txt*"]
+			, "js": ["chrome/utils/oauth2/oauth2_inject.js"]
+			, "run_at": "document_start"
+		},
+		{
+			"matches": ["https://github.com/robots.txt*"]
+			, "js": ["chrome/utils/oauth2/oauth2_inject.js"]
+			, "run_at": "document_start"
+		}
+	],
+	, "options_page": "index.html"
     , "homepage_url": "https://github.com/hnjd-fe/chrome-plugin-save-anywhere"
     , "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
     , "icons": {
