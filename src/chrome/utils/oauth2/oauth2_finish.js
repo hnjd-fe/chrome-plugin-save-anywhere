@@ -37,7 +37,7 @@ if (index > -1) {
   params = url.substring(index);
 }
 
-var redirect = chrome.extension.getURL('index.html');
+var redirect = chrome.extension.getURL('sync.html');
 window.location = redirect + params;
 
 
