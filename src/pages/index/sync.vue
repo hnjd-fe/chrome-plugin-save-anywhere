@@ -9,7 +9,7 @@
                 {{$t('login_github')}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
 
             <el-button type="primary" style="" id="logout" v-if="token">
-                {{$t('logout_github')}} {{nickname}}@{{logintype}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
+                {{$t('logout')}} {{nickname}}@{{logintype}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
         </el-row>
         </el-row>
     </el-main>
@@ -23,6 +23,7 @@
 </style>
 
 <script>
+import Vue from 'vue'
 import config from '@src/chrome/config.js'
 import db from '@src/chrome/db.js'
 import dataMixin from '@src/mixin/data.js'
@@ -50,13 +51,18 @@ export default {
         }
     }
     , mounted(){
-        console.log( this.token ); 
         this.setDataItem( 'token' );
         this.setDataItem( 'username' );
         this.setDataItem( 'nickname' );
         this.setDataItem( 'email' );
         this.setDataItem( 'md5' );
         this.setDataItem( 'logintype' );
+
+        if( this.$route.query.token ){
+            setTimeout( ()=>{
+                location.href = "sync.html" 
+            }, 50 );
+        }
     }
 }
 </script>
