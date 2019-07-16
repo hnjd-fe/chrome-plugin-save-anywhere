@@ -23,7 +23,18 @@
 				></el-checkbox>
 			</el-form-item>
 
+			<el-form-item :label="$t('login')" v-if="!token">
+                <el-button type="primary" style="width:180px;" id="login">
+                    {{$t('login_github')}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
+			</el-form-item>
+
+			<el-form-item :label="$t('logout')" v-if="token">
+                <el-button type="primary" style="" id="logout">
+                    {{$t('logout')}} {{nickname}}@{{logintype}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
+			</el-form-item>
+
 		</el-form>
+
     </el-main>
 </el-container>
 </template>
@@ -81,6 +92,7 @@ export default {
 		}
 	}
 	, mounted() {
+        this.initLogin();
 	}
 	, created() {
 		this.form.devMode = this.globalVar.devMode;

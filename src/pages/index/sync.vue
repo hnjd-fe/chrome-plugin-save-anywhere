@@ -7,9 +7,6 @@
         <el-row>
             <el-button type="primary" style="width:180px;" id="login" v-if="!token">
                 {{$t('login_github')}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
-
-            <el-button type="primary" style="" id="logout" v-if="token">
-                {{$t('logout')}} {{nickname}}@{{logintype}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
         </el-row>
         </el-row>
     </el-main>
