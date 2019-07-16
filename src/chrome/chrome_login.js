@@ -1,4 +1,6 @@
 
+import config from './config.js';
+import db from './db.js';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -27,13 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	delegate( document.body, '#logout', 'click', ( evt )=> {
-		localStorage.removeItem( 'token' );
-		localStorage.removeItem( 'md5' );
-		localStorage.removeItem( 'username' );
-		localStorage.removeItem( 'nickname' );
-		localStorage.removeItem( 'email' );
-		localStorage.removeItem( 'logintype' );
-		localStorage.removeItem( 'uid' );
+        db.logout();
 		
 		location.reload();
 	});

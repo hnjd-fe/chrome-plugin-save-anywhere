@@ -15,6 +15,10 @@ export default class IndexDB extends BaseDB {
         console.log( 'method from IndexDB' )
     }
 
+    isLogin() {
+        return localStorage.getItem( 'uid' ) && localStorage.getItem( 'token' );
+    }
+
     topList( limit = 50 ){
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
@@ -137,12 +141,46 @@ export default class IndexDB extends BaseDB {
                 , json 
             );
             console.log( 'data added:', dataItem );
-            db[config.dbDataTableName].add( dataItem ).then(function() {
+            db[config.dbDataTableName].add( dataItem ).then(()=>{
+                if( this.isLogin() ){
+                    axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/add', {
+                        uid: localStorage.getItem( 'uid' )
+                        , token: localStorage.getItem( 'token' )
+                        , site_url: dataItem.siteUrl
+                        , site_title: dataItem.siteTitle
+                        , note: dataItem.note
+                        , remark: dataItem.remark
+                        , update_date: parseInt( dataItem.updateDate)
+                        , create_date: parseInt( dataItem.createDate )
+                        , height: parseInt( dataItem.height )
+                        , width: parseInt( dataItem.width )
+                        , tags: dataItem.tags
+                        , md5: dataItem.md5
+                    }).then( (res)=>{
+                        this.parseRequestData( res );
+                    });
+                }
                 resolve( dataItem )
             }).catch(function (e) {
                 reject( e )
             });
         });
+    }
+
+    parseRequestData( res ){
+        if( res && res.data && res.data.errno === 2 ){
+            this.logout();
+        }
+    }
+
+    logout(){
+		localStorage.removeItem( 'token' );
+		localStorage.removeItem( 'md5' );
+		localStorage.removeItem( 'username' );
+		localStorage.removeItem( 'nickname' );
+		localStorage.removeItem( 'email' );
+		localStorage.removeItem( 'logintype' );
+		localStorage.removeItem( 'uid' );
     }
 
     dataGenerator( limit = 10000 ){

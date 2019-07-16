@@ -12,6 +12,8 @@ import store from '@src/store';
 import router from './router';
 import routes from './routes.js';
 
+require( '@src/chrome/chrome_login.js');
+
 router.addRoutes(routes);
 
 Vue.use( VueI18n );
