@@ -13,6 +13,7 @@ const messages = {
 
 		, "searchPlaceholder": "search text"
 		, "nodata": "nothing in there"
+        , "synchronous_short": "sync"
 	},
 	zh: {
         "mainPage": "save-anywhere",

@@ -66,13 +66,16 @@
 
     <el-footer>
         <el-row>
-            <el-col :span="8">
+            <el-col :span="13">
                 <el-link :href="packInfo.homepage" target="_blank" class="pluginName">
                     <i class="el-icon-logo" style=""></i>
                     <span>{{packInfo.name}}</span>
                 </el-link>
+                <el-link v-if="token" :title="$t('synchronous')" style="margin-left: 5px;" @click="synchronousData">
+                     <i class="el-icon-refresh">{{$t('synchronous_short')}}</i>
+                </el-link>
             </el-col>
-            <el-col :span="16" style="text-align: right">
+            <el-col :span="11" style="text-align: right">
                 <el-link id="login" v-if="!token">{{$t('login')}}@github</el-link>
                 <el-link v-if="token" href="javascript:;" id="logout">{{$t('logout')}}</el-link>
                 <el-link v-if="token">, </el-link>

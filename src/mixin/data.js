@@ -28,7 +28,7 @@ let mixin = {
     }
     , methods: {
         synchronousData() {
-            console.log( 'synchronousData', Date.now() );
+            console.log( 'synchronousData', Date.now(), db.isLogin() );
             if( db.isLogin() ){
                 db.sync().then( ()=>{
                 });
@@ -60,10 +60,10 @@ let mixin = {
             this.$refs.databaseInfo.updateTotal();
         }
 
-        , deleteItem( id ) {
+        , deleteItem( id, md5 ) {
             return new Promise( ( resolve, reject ) => {
-                db.deleteItem( id ).then( ()=> {
-                    resolve( id );
+                db.deleteItem( id, md5 ).then( ()=> {
+                    resolve( id, md5 );
                 }).catch( ()=>{
                     reject( id );
                 });

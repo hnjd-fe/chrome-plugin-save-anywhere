@@ -49,7 +49,7 @@
         <el-table-column  :label="$t('operation')" :width="200">
             <template slot-scope="scope">
                 <el-button v-if="false">{{$t('modify')}}</el-button>
-                <el-button @click="onDeleteItem( $event, scope.row.id, scope )">{{$t('delete')}}</el-button>
+                <el-button @click="onDeleteItem( $event, scope.row.id, scope.row )">{{$t('delete')}}</el-button>
             </template>
         </el-table-column>
 
@@ -121,7 +121,7 @@ export default {
 		}
         , onDeleteItem( evt, id, item ){
             this.loading = 1;
-            this.deleteItem( id ).then( ( )=> {
+            this.deleteItem( id, item.md5 ).then( ( )=> {
                 for( let i = 0, j = this.listData.length; i < j; i++ ){
                     let tmp = this.listData[ i ];
                     if( tmp.id == id ){
