@@ -6,6 +6,8 @@ import IDBExportImport from '../utils/indexeddb-export-import.js'
 import moment from '../utils/moment.js'
 import saveAs from '../utils/FileSaver.js'
 
+import qs from '../utils/qs.js';
+
 export default class IndexDB extends BaseDB {
     constructor( dbType ){
         super( 'IndexedDB' )
@@ -37,8 +39,7 @@ export default class IndexDB extends BaseDB {
                 db[config.dbDataTableName].where('id').equals( parseInt( id ) ).toArray().then( ( data )=>{
                     console.log( data, id );
                     
-                    resolve( 
-                        { data: data, total: data.length }
+                    resolve( { data: data, total: data.length }
                     );
                 });
             });
@@ -167,9 +168,52 @@ export default class IndexDB extends BaseDB {
         });
     }
 
+    sync() {
+        return new Promise( ( resolve, reject ) => {
+            if( !this.isLogin() ){
+                resolve();
+                return;
+            }
+            let db = this.getDB();
+            db[config.dbDataTableName].toArray().then( ( data )=>{
+                console.log( data );
+                if( !data.length ){
+                    resolve( [] );
+                    return;
+                }
+
+                let md5 = {};
+
+                data.map( ( item ) => {
+                    md5[ item.md5 ] = item.id;
+                });
+
+                console.log( md5 );
+
+               axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/sync&rnd=' + Date.now(), {
+                    uid: localStorage.getItem( 'uid' )
+                    , token: localStorage.getItem( 'token' )
+                    , md5: JSON.stringify( md5 )
+                }).then( (res)=>{
+                    this.parseRequestData( res );
+                });
+
+
+                //resolve()
+            }).catch(function (e) {
+                reject( e )
+            });
+        });
+    }
+
     parseRequestData( res ){
+        if( res && res.data && res.data.errno === 1 ){
+            //this.logout();
+            return;
+        }
         if( res && res.data && res.data.errno === 2 ){
             this.logout();
+            return;
         }
     }
 

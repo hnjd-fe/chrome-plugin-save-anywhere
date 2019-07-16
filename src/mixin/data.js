@@ -29,6 +29,10 @@ let mixin = {
     , methods: {
         synchronousData() {
             console.log( 'synchronousData', Date.now() );
+            if( db.isLogin() ){
+                db.sync().then( ()=>{
+                });
+            }
         }
         , initLogin() {
             this.setDataItem( 'token' );
