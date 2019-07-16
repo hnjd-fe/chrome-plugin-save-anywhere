@@ -91,7 +91,9 @@ let devConfig = {
         {
             path: /\/(importExport|dataManage).html/,
             bypass: function(req, res, proxyOptions) {
-                return '/index.html';
+                if (req.headers.accept.indexOf('html') !== -1) {
+                    return '/index.html';
+                }
             }
         }
     ],
@@ -110,6 +112,12 @@ let devConfig = {
         app.get('*.css', function(req, res) {
             res.sendStatus(200);
         });
+        /*
+        app.get('chrome_login.js', function(req, res) {
+            res.sendStatus(200);
+        });
+        */
+
     }
 };
 
