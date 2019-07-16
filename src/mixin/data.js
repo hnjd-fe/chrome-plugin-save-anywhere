@@ -16,18 +16,57 @@ let mixin = {
 			, loading: true 
             , paddingMain: ''
             , searchTextDelay: 0
+            , syncInProcessing: 0
 
+            , token: localStorage.getItem( 'token' )
+            , email: localStorage.getItem( 'email' )
+            , username: localStorage.getItem( 'username' )
+            , nickname: localStorage.getItem( 'nickname' )
+            , md5: localStorage.getItem( 'md5' )
+            , logintype: localStorage.getItem( 'logintype' )
+            , uid: localStorage.getItem( 'uid' )
         }
     }
     , methods: {
-        updateTotal() {
+        synchronousData() {
+            console.log( 'synchronousData', Date.now(), db.isLogin() );
+
+            this.syncInProcessing = 1;
+            if( db.isLogin() ){
+                db.sync().then( ()=>{
+                });
+            }
+        }
+        , initLogin() {
+            this.setDataItem( 'token' );
+            this.setDataItem( 'username' );
+            this.setDataItem( 'nickname' );
+            this.setDataItem( 'email' );
+            this.setDataItem( 'md5' );
+            this.setDataItem( 'logintype' );
+            this.setDataItem( 'uid' );
+
+            if( this.$route.query.token ){
+                setTimeout( ()=>{
+                    location.href = location.href.split( '?' )[0];
+                }, 50 );
+            }
+        }
+        , setDataItem( key, val ){
+            if( this.$route.query[key]){
+                localStorage.setItem( key, this.$route.query[key]);
+                this.$set( this.data || {}, key, val );
+            }
+        }
+
+        , updateTotal() {
             this.$refs.databaseInfo.updateTotal();
         }
 
-        , deleteItem( id ) {
+        , deleteItem( id, md5 ) {
             return new Promise( ( resolve, reject ) => {
-                db.deleteItem( id ).then( ()=> {
-                    resolve( id );
+                db.deleteItem( id, md5 ).then( ()=> {
+                    resolve( id, md5 );
                 }).catch( ()=>{
                     reject( id );
                 });

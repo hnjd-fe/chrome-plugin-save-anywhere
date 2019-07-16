@@ -9,13 +9,12 @@
         , "default_icon": "./assets/img/save-everywhere16.png"
         , "default_title": "save-anywhere"
     }
-    , "commands": {
-    }
     , "background": {
         "page": "./chrome/background.html"
     }
     , "permissions": [ 
         "tabs"
+		, "identity"
         , "windows"
         , "declarativeContent"
         , "storage"
@@ -23,6 +22,9 @@
         , "notifications"
         , "declarativeWebRequest"
         , "webRequest"
+		, "https://accounts.google.com/o/oauth2/token"
+		, "https://github.com/"
+		, "http://btbtd.org/api/*"
     ]
     , "optional_permissions": [
         "http://*/"
@@ -30,7 +32,17 @@
         , "ftp://*/"
         , "file:///*/"
     ]
-    , "options_page": "index.html"
+	, "web_accessible_resources" : [
+		"chrome/utils/oauth2/oauth2.html"
+	]
+	, "content_scripts": [
+		{
+			"matches": ["http://btbtd.org/api/saveanywhere/token*"]
+			, "js": ["chrome/utils/oauth2/oauth2_inject.js"]
+			, "run_at": "document_start"
+		}
+	]
+	, "options_page": "index.html"
     , "homepage_url": "https://github.com/hnjd-fe/chrome-plugin-save-anywhere"
     , "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
     , "icons": {

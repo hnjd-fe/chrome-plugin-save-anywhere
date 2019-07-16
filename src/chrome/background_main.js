@@ -51,7 +51,13 @@ function addNote(info, tab) {
 		, height: tab.height.toString()
 	}
 
+    chrome.tabs.executeScript(tab.id, {code:"document.body.innerHTML"}, ( data )=>{
+        console.log( 'test', data );
+    })
+
+
 	return new Promise( ( resolve, reject ) => {
+
 
 		chrome.permissions.request({
 			permissions: ['tabs'],

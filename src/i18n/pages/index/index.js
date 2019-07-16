@@ -55,9 +55,6 @@ const lang = {
         , "fixmd5DataSuccessInfo": "congratulation! data fixmd5ed."
         , "fixmd5DataErrorInfo": "could't fixmd5 data!"
 
-        //sync
-        , "sync": "sync"
-        , "login": "login"
     }
     , "zh": {
 

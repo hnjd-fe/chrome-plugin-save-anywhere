@@ -16,6 +16,8 @@ import databaseInfo from '@src/components/databaseInfo.vue'
 
 import globalVar from '@src/globalVar.js';
 
+require( '@src/chrome/chrome_login.js');
+
 router.addRoutes(routes);
 
 Vue.prototype.globalVar = globalVar;

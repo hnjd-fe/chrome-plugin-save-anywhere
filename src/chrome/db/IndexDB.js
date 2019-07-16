@@ -6,6 +6,8 @@ import IDBExportImport from '../utils/indexeddb-export-import.js'
 import moment from '../utils/moment.js'
 import saveAs from '../utils/FileSaver.js'
 
+import sync_data from '../data/sync_data.js';
+
 export default class IndexDB extends BaseDB {
     constructor( dbType ){
         super( 'IndexedDB' )
@@ -13,6 +15,10 @@ export default class IndexDB extends BaseDB {
 
     init(){
         console.log( 'method from IndexDB' )
+    }
+
+    isLogin() {
+        return localStorage.getItem( 'uid' ) && localStorage.getItem( 'token' );
     }
 
     topList( limit = 50 ){
@@ -33,8 +39,7 @@ export default class IndexDB extends BaseDB {
                 db[config.dbDataTableName].where('id').equals( parseInt( id ) ).toArray().then( ( data )=>{
                     console.log( data, id );
                     
-                    resolve( 
-                        { data: data, total: data.length }
+                    resolve( { data: data, total: data.length }
                     );
                 });
             });
@@ -102,14 +107,27 @@ export default class IndexDB extends BaseDB {
         })
     }
 
-    deleteItem( id ) {
+    deleteItem( id, md5 ) {
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
             db[config.dbDataTableName]
                 .where( 'id' )
                 .equals( id )
                 .delete()
-                .then( ()=>{
+                .then( ( data )=>{
+                    console.log( 'delete', id, data, md5 );
+                   if( this.isLogin() && md5 ){
+                       axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/del&rnd=' + Date.now(), {
+                            uid: localStorage.getItem( 'uid' )
+                            , token: localStorage.getItem( 'token' )
+                            , md5: md5
+                        }).then( (res)=>{
+                            this.parseRequestData( res, ()=>{
+                                resolve();
+                            });
+                        });
+                    }
+
                     resolve( id );
                 })
                 .catch( (err)=>{
@@ -129,20 +147,201 @@ export default class IndexDB extends BaseDB {
                 , siteTitle: ''
                 , tags: ''
                 , remark: ''
-                , width: "100"
-                , height: "100"
+                , width: 100
+                , height: 100
                 , createDate: dateStr
                 , updateDate: dateStr
                 }
                 , json 
             );
             console.log( 'data added:', dataItem );
-            db[config.dbDataTableName].add( dataItem ).then(function() {
+            db[config.dbDataTableName].add( dataItem ).then(()=>{
+                if( this.isLogin() ){
+                    axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/add', {
+                        uid: localStorage.getItem( 'uid' )
+                        , token: localStorage.getItem( 'token' )
+                        , siteUrl: dataItem.siteUrl
+                        , siteTitle: dataItem.siteTitle
+                        , note: dataItem.note
+                        , remark: dataItem.remark
+                        , updateDate: parseInt( dataItem.updateDate)
+                        , createDate: parseInt( dataItem.createDate )
+                        , height: parseInt( dataItem.height )
+                        , width: parseInt( dataItem.width )
+                        , tags: dataItem.tags
+                        , md5: dataItem.md5
+                    }).then( (res)=>{
+                        this.parseRequestData( res );
+                    });
+                }
                 resolve( dataItem )
             }).catch(function (e) {
                 reject( e )
             });
         });
+    }
+
+    batchAdd( data ){
+        return new Promise( ( resolve, reject ) => {
+            let db = this.getDB();
+
+            db[config.dbDataTableName].bulkAdd( data ).then(function() {
+                resolve( data )
+            }).catch(function (e) {
+                reject( e )
+            });
+        });
+    }
+
+    sync() {
+        return new Promise( ( resolve, reject ) => {
+            if( !this.isLogin() ){
+                resolve();
+                return;
+            }
+            let db = this.getDB();
+            db[config.dbDataTableName].toArray().then( ( data )=>{
+                console.log( data );
+
+                let md5 = {};
+
+                data.map( ( item ) => {
+                    md5[ item.md5 ] = item.id;
+                });
+                
+               axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/sync&rnd=' + Date.now(), {
+                    uid: localStorage.getItem( 'uid' )
+                    , token: localStorage.getItem( 'token' )
+                    , md5: JSON.stringify( md5 )
+                }).then( (res)=>{
+                    this.parseRequestData( res, ()=>{
+                        resolve();
+                    });
+                });
+                /*
+                this.parseRequestData( {data:sync_data}, ()=>{
+                    resolve();
+                });
+                */
+            }).catch(function (e) {
+                reject( e )
+            });
+        });
+    }
+
+    batchDelete( key, list ){
+        return new Promise( ( resolve, reject ) => {
+            let db = this.getDB();
+            db[config.dbDataTableName].where( key ).anyOf( list ).delete().then( ( data )=>{
+                resolve();
+            });
+        });
+    }
+
+    batchPush( key, list ){
+        return new Promise( ( resolve, reject ) => {
+            let db = this.getDB();
+
+            console.log( 'x1' );
+            db[config.dbDataTableName].where( key ).anyOf( list ).toArray().then( ( data )=>{
+                if( this.isLogin() ){
+                    console.log( 'x2' );
+                    data.map( (item)=>{
+                        delete item.id;
+                        delete item.nid;
+                        item.uid = localStorage.getItem( 'uid' );
+                        item.token = localStorage.getItem( 'token' );
+                    });
+
+                    axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/batchAdd', {
+                        uid: localStorage.getItem( 'uid' )
+                        , token: localStorage.getItem( 'token' )
+                        , data: JSON.stringify( data )
+                    }).then( (res)=>{
+                        resolve();
+                    });
+                }
+            }).catch(function (e) {
+                reject( e )
+            });
+        });
+
+    }
+
+    parseRequestData( res, cb ){
+        if( res && res.data && res.data.errno === 1 ){
+            this.logout();
+            return;
+        }
+        if( res && res.data && res.data.errno === 2 ){
+            this.logout();
+            return;
+        }
+
+        this.refresh = 0;
+
+        if( res && res.data && res.data.errno === 0 ){
+            console.log( 'res.data', res.data );
+
+            if( res.data && res.data && res.data.data ) {
+                if(  res.data.data.sync && res.data.data.sync.length ){
+                    let md5List = [];
+                    res.data.data.sync.map( (item)=>{
+                        md5List.push( item.md5 );
+                    });
+                    this.batchDelete( 'md5', md5List ).then( ()=>{
+                        this.batchAdd( res.data.data.sync ).then( ( data )=>{
+                            this.refresh++;
+                            this.checkRefresh();
+                        });
+                    });
+                }else{
+                    this.refresh++;
+                    this.checkRefresh();
+                }
+                if( res.data.data.deleted && res.data.data.deleted.length ){
+                    this.batchDelete( 'md5', res.data.data.deleted ).then( ()=>{
+                        this.refresh++;
+                        this.checkRefresh();
+                    });
+                }else{
+                    this.refresh++;
+                    this.checkRefresh();
+                }
+
+                console.log( 'news', res.data.data.news );
+                if( res.data.data.news && res.data.data.news.length ){
+                    this.batchPush( 'md5', res.data.data.news).then( ()=>{
+                        this.refresh++;
+                        this.checkRefresh();
+                    });
+                }else{
+                    this.refresh++;
+                    this.checkRefresh();
+                }
+
+            }
+        }
+
+        cb && cb( res.data );
+    }
+
+    checkRefresh(){
+        if( this.refresh === 3 ){
+            location.reload();
+        }
+    }
+
+    logout(){
+		localStorage.removeItem( 'token' );
+		localStorage.removeItem( 'md5' );
+		localStorage.removeItem( 'username' );
+		localStorage.removeItem( 'nickname' );
+		localStorage.removeItem( 'email' );
+		localStorage.removeItem( 'logintype' );
+		localStorage.removeItem( 'uid' );
+
+        location.reload();
     }
 
     dataGenerator( limit = 10000 ){

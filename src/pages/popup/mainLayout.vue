@@ -66,13 +66,24 @@
 
     <el-footer>
         <el-row>
-            <el-col :span="12">
+            <el-col :span="13">
                 <el-link :href="packInfo.homepage" target="_blank" class="pluginName">
                     <i class="el-icon-logo" style=""></i>
                     <span>{{packInfo.name}}</span>
                 </el-link>
+                <el-link v-if="token && !syncInProcessing" :title="$t('synchronous')" style="margin-left: 5px;" @click="synchronousData">
+                     <i class="el-icon-refresh">{{$t('synchronous_short')}}</i>
+                </el-link>
+                <el-link v-if="token && syncInProcessing" style="margin-left: 5px;" >
+                     {{$t('synchronous_in_processing_short')}}
+                </el-link>
             </el-col>
-            <el-col :span="12" style="text-align: right">
+            <el-col :span="11" style="text-align: right">
+                <el-link id="login" v-if="!token">{{$t('login')}}@github</el-link>
+                <el-link v-if="token" href="javascript:;" id="logout">{{$t('logout')}}</el-link>
+                <el-link v-if="token">, </el-link>
+                <el-link v-if="token" >{{nickname}}@{{logintype}} </el-link>
+
                 <el-link href="./index.html" target="_save_anywhere_index" 
                     style="margin-right: -10px"
                     :title="$t('setting')"
@@ -180,6 +191,8 @@ export default {
         let p = this;
 
 		this.updateFullList( 1 );
+
+        this.initLogin();
     }
     , methods: {
 		afterUpdateList(){
