@@ -5,7 +5,7 @@
             <databaseInfo ref="databaseInfo"></databaseInfo>
         </el-row>
         <el-row>
-            <el-button type="primary" @click="dataGenerator()">{{$t('generateDataLabel')}}<i class="el-icon-circle-plus el-icon--right"></i></el-button>
+            <el-button type="primary" @click="dataGenerator()" v-if="false">{{$t('generateDataLabel')}}<i class="el-icon-circle-plus el-icon--right"></i></el-button>
         </el-row>
         <el-row>
             <el-button type="primary" @click="clearData()">{{$t('cleanAllData')}}<i class="el-icon-delete el-icon--right"></i></el-button>
