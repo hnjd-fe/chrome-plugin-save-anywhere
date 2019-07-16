@@ -129,8 +129,8 @@ export default class IndexDB extends BaseDB {
                 , siteTitle: ''
                 , tags: ''
                 , remark: ''
-                , width: "100"
-                , height: "100"
+                , width: 100
+                , height: 100
                 , createDate: dateStr
                 , updateDate: dateStr
                 }
