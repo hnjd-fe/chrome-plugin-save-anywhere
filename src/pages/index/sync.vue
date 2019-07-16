@@ -4,11 +4,19 @@
         <el-row>
             <databaseInfo ref="databaseInfo"></databaseInfo>
         </el-row>
-        <el-row>
-            <el-button type="primary" style="width:180px;" id="login" v-if="!token">
-                {{$t('login_github')}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
+        <el-row v-if="!token">
+            <el-button type="primary" style="width:180px;" id="login">
+                {{$t('login_github')}}<i class="el-icon-user-solid el-icon--right"></i>
+            </el-button>
+            {{$t('no_login_sync_msg')}}
         </el-row>
+
+        <el-row v-if="token">
+            <el-button type="primary" style="" @click="synchronousData" >
+                {{$t('synchronous_data')}}<i class="el-icon-refresh el-icon--right"></i>
+            </el-button>
         </el-row>
+
     </el-main>
 </el-container>
 </template>

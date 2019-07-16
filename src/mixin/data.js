@@ -27,7 +27,10 @@ let mixin = {
         }
     }
     , methods: {
-        initLogin() {
+        synchronousData() {
+            console.log( 'synchronousData', Date.now() );
+        }
+        , initLogin() {
             this.setDataItem( 'token' );
             this.setDataItem( 'username' );
             this.setDataItem( 'nickname' );
