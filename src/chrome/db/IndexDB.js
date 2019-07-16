@@ -323,7 +323,7 @@ export default class IndexDB extends BaseDB {
             }
         }
 
-        cb( res.data );
+        cb && cb( res.data );
     }
 
     checkRefresh(){
