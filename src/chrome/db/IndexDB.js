@@ -340,6 +340,8 @@ export default class IndexDB extends BaseDB {
 		localStorage.removeItem( 'email' );
 		localStorage.removeItem( 'logintype' );
 		localStorage.removeItem( 'uid' );
+
+        location.reload();
     }
 
     dataGenerator( limit = 10000 ){

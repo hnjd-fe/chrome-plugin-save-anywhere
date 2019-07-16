@@ -55,11 +55,6 @@ const lang = {
         , "fixmd5DataSuccessInfo": "congratulation! data fixmd5ed."
         , "fixmd5DataErrorInfo": "could't fixmd5 data!"
 
-        //sync
-        , "sync": "synchronous"
-        , "login_github": "login github"
-        , "no_login_sync_msg": "synchronous data must be logined!"
-        , "synchronous_data": "synchronous data from remote server"
     }
     , "zh": {
 

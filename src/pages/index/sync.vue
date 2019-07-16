@@ -11,10 +11,13 @@
             {{$t('no_login_sync_msg')}}
         </el-row>
 
-        <el-row v-if="token">
+        <el-row v-if="token && !syncInProcessing">
             <el-button type="primary"  @click="synchronousData" >
                 {{$t('synchronous_data')}}<i class="el-icon-refresh el-icon--right"></i>
             </el-button>
+        </el-row>
+        <el-row v-if="token && syncInProcessing">
+            {{$t('synchronous_in_processing')}}
         </el-row>
 
     </el-main>

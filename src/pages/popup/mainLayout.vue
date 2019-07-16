@@ -71,8 +71,11 @@
                     <i class="el-icon-logo" style=""></i>
                     <span>{{packInfo.name}}</span>
                 </el-link>
-                <el-link v-if="token" :title="$t('synchronous')" style="margin-left: 5px;" @click="synchronousData">
+                <el-link v-if="token && !syncInProcessing" :title="$t('synchronous')" style="margin-left: 5px;" @click="synchronousData">
                      <i class="el-icon-refresh">{{$t('synchronous_short')}}</i>
+                </el-link>
+                <el-link v-if="token && syncInProcessing" style="margin-left: 5px;" >
+                     {{$t('synchronous_in_processing_short')}}
                 </el-link>
             </el-col>
             <el-col :span="11" style="text-align: right">

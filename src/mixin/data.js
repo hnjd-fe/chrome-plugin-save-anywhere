@@ -16,6 +16,7 @@ let mixin = {
 			, loading: true 
             , paddingMain: ''
             , searchTextDelay: 0
+            , syncInProcessing: 0
 
             , token: localStorage.getItem( 'token' )
             , email: localStorage.getItem( 'email' )
@@ -29,6 +30,8 @@ let mixin = {
     , methods: {
         synchronousData() {
             console.log( 'synchronousData', Date.now(), db.isLogin() );
+
+            this.syncInProcessing = 1;
             if( db.isLogin() ){
                 db.sync().then( ()=>{
                 });
