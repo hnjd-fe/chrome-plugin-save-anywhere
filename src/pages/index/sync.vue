@@ -34,35 +34,12 @@ export default {
     mixins: [ dataMixin ]
     , data() {
         return {
-            token: localStorage.getItem( 'token' )
-            , email: localStorage.getItem( 'email' )
-            , username: localStorage.getItem( 'username' )
-            , nickname: localStorage.getItem( 'nickname' )
-            , md5: localStorage.getItem( 'md5' )
-            , logintype: localStorage.getItem( 'logintype' )
         }
     }
     , methods: {
-        setDataItem( key, val ){
-            if( this.$route.query[key]){
-                localStorage.setItem( key, this.$route.query[key]);
-                this.$set( this.data || {}, key, val );
-            }
-        }
     }
     , mounted(){
-        this.setDataItem( 'token' );
-        this.setDataItem( 'username' );
-        this.setDataItem( 'nickname' );
-        this.setDataItem( 'email' );
-        this.setDataItem( 'md5' );
-        this.setDataItem( 'logintype' );
-
-        if( this.$route.query.token ){
-            setTimeout( ()=>{
-                location.href = "sync.html" 
-            }, 50 );
-        }
+        this.initLogin();
     }
 }
 </script>

@@ -73,8 +73,11 @@
                 </el-link>
             </el-col>
             <el-col :span="16" style="text-align: right">
-                <el-link id="login" v-if="!token">login</el-link>
-                <el-link id="loginout" v-if="token">{{nickname}}@{{logintype}}</el-link>
+                <el-link id="login" v-if="!token">{{$t('login')}}@github</el-link>
+                <el-link v-if="token" href="javascript:;" id="logout">{{$t('logout')}}</el-link>
+                <el-link v-if="token">, </el-link>
+                <el-link v-if="token" >{{nickname}}@{{logintype}} </el-link>
+
                 <el-link href="./index.html" target="_save_anywhere_index" 
                     style="margin-right: -10px"
                     :title="$t('setting')"
@@ -173,12 +176,6 @@ export default {
     mixins: [ dataMixin ],
     data() {
         return {
-            token: localStorage.getItem( 'token' )
-            , email: localStorage.getItem( 'email' )
-            , username: localStorage.getItem( 'username' )
-            , nickname: localStorage.getItem( 'nickname' )
-            , md5: localStorage.getItem( 'md5' )
-            , logintype: localStorage.getItem( 'logintype' )
         }
     }
     , created(){
@@ -188,6 +185,8 @@ export default {
         let p = this;
 
 		this.updateFullList( 1 );
+
+        this.initLogin();
     }
     , methods: {
 		afterUpdateList(){

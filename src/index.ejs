@@ -5,12 +5,13 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <%= eval( require( 'ejs-render-loader!./html/header.ejs') )() %>
-        <script src="./chrome/chrome_login.js"></script>
         <title><%= htmlWebpackPlugin.options.title %></title>
     </head>
     <body>
         <%= eval( require( 'ejs-render-loader!./html/top.ejs') )() %>
         <div id="app">loading...</div>
         <%= eval( require( 'ejs-render-loader!./html/footer.ejs') )() %>
+        <script type="text/javascript" src="./chrome/utils/delegate.js"></script>
+        <script type="text/javascript" src="./chrome/chrome_login.js"></script>
     </body>
 </html>
