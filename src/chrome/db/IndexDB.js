@@ -6,8 +6,6 @@ import IDBExportImport from '../utils/indexeddb-export-import.js'
 import moment from '../utils/moment.js'
 import saveAs from '../utils/FileSaver.js'
 
-import qs from '../utils/qs.js';
-
 export default class IndexDB extends BaseDB {
     constructor( dbType ){
         super( 'IndexedDB' )
@@ -187,8 +185,6 @@ export default class IndexDB extends BaseDB {
                 data.map( ( item ) => {
                     md5[ item.md5 ] = item.id;
                 });
-
-                console.log( md5 );
 
                axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/sync&rnd=' + Date.now(), {
                     uid: localStorage.getItem( 'uid' )

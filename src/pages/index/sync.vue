@@ -12,7 +12,7 @@
         </el-row>
 
         <el-row v-if="token">
-            <el-button type="primary" style="" id="sync_ele" >
+            <el-button type="primary"  @click="synchronousData" >
                 {{$t('synchronous_data')}}<i class="el-icon-refresh el-icon--right"></i>
             </el-button>
         </el-row>
