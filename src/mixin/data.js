@@ -17,6 +17,7 @@ let mixin = {
             , paddingMain: ''
             , searchTextDelay: 0
             , syncInProcessing: 0
+            , fullTotal: 0
 
             , token: localStorage.getItem( 'token' )
             , email: localStorage.getItem( 'email' )
@@ -81,6 +82,7 @@ let mixin = {
 				this.listCurPage = 1;
 
                 this.afterUpdateList();
+                this.updateFullTotal();
             });
         }
         , updateFullList( page = 1, id ) {
@@ -91,10 +93,17 @@ let mixin = {
 				this.page = 1;
 
                 this.afterUpdateList();
+                this.updateFullTotal();
             });
         }
 
         , afterUpdateList( curListPage ){
+        }
+
+        , updateFullTotal(){
+            db.total().then( ( total ) => {
+                this.fullTotal = total;
+            });
         }
 
         , hightlightSearch( text, isPre, item ){
@@ -149,6 +158,7 @@ let mixin = {
 					this.listTotal = this.searchData.length
 
 					this.afterUpdateList();
+                    this.updateFullTotal();
 				});
             }, this.searchDelayMs );
         }

@@ -8,7 +8,7 @@
                     {{$t('login_github')}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
 			</el-form-item>
 
-			<el-form-item :label="$t('logout')" v-if="token">
+			<el-form-item :label="$t('logout')+':'" v-if="token">
                 <el-button type="primary" style="" id="logout">
                     {{$t('logout')}} {{nickname}}@{{logintype}}<i class="el-icon-user-solid el-icon--right"></i></el-button>
 			</el-form-item>
@@ -34,6 +34,11 @@
 					@change="devModeChange"
 				></el-checkbox>
 			</el-form-item>
+
+			<el-form-item :label="$t('version')">
+                {{manifestInfo.version}}
+			</el-form-item>
+
 		</el-form>
 
     </el-main>
@@ -57,6 +62,7 @@ import langEn from 'element-ui/lib/locale/lang/en'
 import langZh from 'element-ui/lib/locale/lang/zh-CN'
 
 const packInfo = require( '@root/package.json' )
+const manifestInfo = require( '@src/manifest.json' )
 
 export default {
 	mixins: [ dataMixin ]
@@ -67,6 +73,7 @@ export default {
 				, lang: i18nConfig.getLocale()
 			}
 			, langs: i18nConfig.supportLang
+            , manifestInfo
 		}
 	}
 	, computed: {

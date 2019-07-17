@@ -1,7 +1,7 @@
 {
     "name": "save-anywhere"
     , "short_name": "note that"
-    , "version": "1.4"
+    , "version": "1.5"
     , "description": "save selection text"
     , "manifest_version": 2
     , "browser_action": {

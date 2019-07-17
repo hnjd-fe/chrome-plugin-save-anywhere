@@ -6,6 +6,7 @@ const lang = {
 		"databaseLabel": "database:"
 		, "dataTableLabel": "table:"
 		, "totalLabel": "total items:"
+		, "curTotalLabel": "current query items:"
 
 		//index
 		, "note": "notes"
@@ -18,6 +19,7 @@ const lang = {
         , "language": "Language:"
         , "devmode": "Develop Mode:"
         , "devmodeDesc": "display development mode configuration"
+        , "version": "vsersion:"
 
 		//import/export
 		, "backupData": "backup datatabse"
@@ -62,6 +64,7 @@ const lang = {
 		"databaseLabel": "数据库:"
 		, "dataTableLabel": "数据表:"
 		, "totalLabel": "数据总数:"
+		, "curTotalLabel": "当前查询总数:"
 
 		//index
 		, "note": "文摘"
@@ -74,6 +77,7 @@ const lang = {
         , "language": "选择语言:"
         , "devmode": "开发者模式"
         , "devmodeDesc": "显示开发者功能"
+        , "version": "当前版本:"
 
 		//import/export
 		, "backupData": "生成备份文件"

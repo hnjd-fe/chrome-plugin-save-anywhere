@@ -7,7 +7,8 @@
                     <i class="el-icon-logo" style="margin-right: 15px"></i>
                 </span>
                 <label style="font-weight: bold; font-size: 16px;">{{packInfo.name}}</label>
-                <span>{{$t('totalLabel')}} </span><span>{{listTotal}}</span>
+                <span>{{$t('totalLabel')}} </span><span>{{fullTotal}}</span>
+                <span v-if="fullTotal != listTotal">, {{$t('curTotalLabel')}} </span><span v-if="fullTotal != listTotal">{{listTotal}}</span>
             </el-col>
             <el-col :span="14" style="text-align:right;">
                   <el-input
