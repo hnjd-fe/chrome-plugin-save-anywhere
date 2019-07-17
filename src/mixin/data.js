@@ -22,7 +22,7 @@ let mixin = {
             , token: localStorage.getItem( 'token' )
             , email: localStorage.getItem( 'email' )
             , username: localStorage.getItem( 'username' )
-            , nickname: localStorage.getItem( 'nickname' )
+            , nickname: localStorage.getItem( 'nickname' ) || localStorage.getItem( 'username' )
             , md5: localStorage.getItem( 'md5' )
             , logintype: localStorage.getItem( 'logintype' )
             , uid: localStorage.getItem( 'uid' )
