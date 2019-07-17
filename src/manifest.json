@@ -1,7 +1,7 @@
 {
     "name": "save-anywhere"
     , "short_name": "note that"
-    , "version": "1.8"
+    , "version": "1.9"
     , "description": "save selection text"
     , "manifest_version": 2
     , "browser_action": {
@@ -29,6 +29,8 @@
     , "optional_permissions": [
         "http://*/"
         , "https://*/"
+        , "ftp://*/"
+        , "file:///*/"
     ]
 	, "web_accessible_resources" : [
 		"chrome/utils/oauth2/oauth2.html"
