@@ -54,7 +54,7 @@
 
     </el-main>
 		<el-pagination
-		  v-if="listData.length && !loading && listTotal > listPageSize"
+		  v-if="listData.length && !loading && listTotal > listPageSize && false"
 		  background
 		  layout="prev, pager, next"
 		  :total="listTotal"
