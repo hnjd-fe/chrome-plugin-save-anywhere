@@ -20,6 +20,10 @@ save-anywerhe 可以右键保存选中的文本，存储到浏览器本地的 in
 
 ![install.jpeg](./static/install.jpeg)
 
+## step 2.1 - 设置插件访问权限（进入插件详情页面，文件访问开关设置为开，文件访问只有为开才能保持文本换行格式 ）
+
+![enable_flie_access.jpg](./static/enable_flie_access.jpg)
+
 ## step 3 - 保存选中的文本（右键选择需要保存的文本，然后在弹出的菜单里点击 "save selection text"）
 
 ![item_save.jpeg](./static/item_save.jpeg)
