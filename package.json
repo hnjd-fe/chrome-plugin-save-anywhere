@@ -1,7 +1,7 @@
 {
   "name": "save-anywhere",
   "description": "chrome 浏览器插件 - 任何位置任何页面保存选中的文本",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "homepage": "https://github.com/hnjd-fe/chrome-plugin-save-anywhere",
   "author": "suches<suches@btbtd.org>",
   "engines": {
