@@ -26,7 +26,7 @@
 		v-loading="loading"
     >
       <el-table :data="listData">
-        <el-table-column prop="id" label="ID" width="80"></el-table-column>
+        <el-table-column prop="id" label="ID" width="80" ></el-table-column>
         <el-table-column  :label="$t('note')">
             <template slot-scope="scope">
             <div>
@@ -79,6 +79,10 @@
 
 .el-header .el-row {
     margin: 0 auto;
+}
+
+.el-table__row > td {
+    vertical-align: top;
 }
 
 .el-aside {
