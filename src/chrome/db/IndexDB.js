@@ -50,6 +50,7 @@ export default class IndexDB extends BaseDB {
             let db = this.getDB();
             db[config.dbDataTableName].count(( count )=>{
                 db[config.dbDataTableName].orderBy('updateDate').reverse().offset( offset ).limit( size ).toArray().then( ( data )=>{
+                    console.log( 'list data', data );
                     resolve( 
                         { data: data, total: count }
                     );
@@ -139,7 +140,7 @@ export default class IndexDB extends BaseDB {
     add( json = {} ) {
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
-            let dateStr = Date.now().toString(); 
+            let dateStr = Date.now(); 
             let dataItem =  Object.assign( {
                 note: '' 
                 , md5: '' 
@@ -351,7 +352,7 @@ export default class IndexDB extends BaseDB {
 
             for( let i = 0; i < limit; i++ ){
                 let tmpNote = 'note' + i;
-                let dateStr = ( Date.now() + i ).toString();
+                let dateStr = ( Date.now() + i )
                 listData.push( {
                     note: tmpNote
                     , md5: md5( tmpNote )
@@ -406,6 +407,23 @@ export default class IndexDB extends BaseDB {
             });
         });
     }
+
+    fixdateData (){
+        return new Promise( ( resolve, reject ) => {
+            let db = this.getDB();
+            let r = [];
+            db.transaction( 'rw', db[config.dbDataTableName], () => {
+               db[config.dbDataTableName].toCollection().modify( ( data )=>{
+                    data.createDate = parseInt( data.createDate );
+                    data.updateDate = parseInt( data.updateDate );
+                    r.push( data );
+                }).then( ()=>{
+                    resolve( r );
+                });;
+            });
+        });
+    }
+
 
     backup(){
         return new Promise( (resolve, reject) => {

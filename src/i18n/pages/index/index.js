@@ -57,6 +57,11 @@ const lang = {
         , "fixmd5DataSuccessInfo": "congratulation! data fixmd5ed."
         , "fixmd5DataErrorInfo": "could't fixmd5 data!"
 
+        , "fixdate": "fix date field"
+        , "fixdateingDataInfo": "fixdateing data in progress, please waiting..."
+        , "fixdateDataNowInfo": "fixdateing data, please waiting..."
+        , "fixdateDataSuccessInfo": "congratulation! data fixdateed."
+        , "fixdateDataErrorInfo": "could't fixdate data!"
     }
     , "zh": {
 
@@ -115,6 +120,11 @@ const lang = {
         , "fixmd5DataSuccessInfo": "恭喜你，md5 字段修复完成"
         , "fixmd5DataErrorInfo": "无法修复 md5 字段"
 
+        , "fixdate": "修复 date 字段"
+        , "fixdateingDataInfo": "date 字段修复中，请稍候..."
+        , "fixdateDataNowInfo": "正在修复 date 字段"
+        , "fixdateDataSuccessInfo": "恭喜你，date 字段修复完成"
+        , "fixdateDataErrorInfo": "无法修复 date 字段"
     }
 }
 

@@ -13,6 +13,9 @@
         <el-row>
             <el-button type="primary" @click="fixmd5()">{{$t('fixmd5')}}<i class="el-icon-finished el-icon--right"></i></el-button>
         </el-row>
+        <el-row>
+            <el-button type="primary" @click="fixdate()">{{$t('fixdate')}}<i class="el-icon-date el-icon--right"></i></el-button>
+        </el-row>
     </el-main>
 </el-container>
 </template>
@@ -77,6 +80,39 @@ export default {
             }, 500 )
 
         }
+        , fixdate() {
+            const h = this.$createElement;
+            if( this.fixdateDataLock  ){
+                this.$message({
+                  message: this.$t('fixdateingDataInfo'),
+                  type: 'warning'
+                });
+                return;
+            }
+            this.$message({
+              message: this.$t('fixdateDataNowInfo'),
+              type: 'info'
+            });
+            this.fixdateDataLock = 1;
+            setTimeout( ()=>{
+                db.fixdateData().then( ()=>{
+                   this.fixdateDataLock = 0;
+                    this.$message({
+                      message: this.$t('fixdateDataSuccessInfo'),
+                      type: 'success'
+                    });
+                    this.updateTotal();
+                } ).catch( (err)=>{
+                    this.$message({
+                      message: this.$t('fixdateDataErrorInfo') + ' '  + err,
+                      type: 'error'
+                    });
+                    this.fixdateDataLock = 0;
+                } );
+            }, 500 )
+
+        }
+
         , clearData() {
             const h = this.$createElement;
             if( this.clearDataLock  ){
