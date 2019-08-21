@@ -135,11 +135,15 @@ export default {
                         break;
                     }
                 }
-                if( !this.listData.legnth ){
-                    this.updateFullList( 1 );
+                console.log( 'this.listData.legnth:', this.listData.length );
+                if( !this.listData.length ){
+                    //this.updateFullList( 1 );
+                    console.log( 'location.href', location.href.split( '?' )[0]+ '?rnd=' + Date.now() );
+                    location.href = location.href.split( '?' )[0]+ '?rnd=' + Date.now();
                 }
             }).catch( err => {
                 this.loading = 0;
+                console.error( err );
             });
         }
     }
