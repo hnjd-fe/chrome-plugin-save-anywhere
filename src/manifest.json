@@ -20,7 +20,6 @@
         , "storage"
         , "contextMenus"
         , "notifications"
-        , "declarativeWebRequest"
         , "webRequest"
 		, "https://accounts.google.com/o/oauth2/token"
 		, "https://github.com/"
