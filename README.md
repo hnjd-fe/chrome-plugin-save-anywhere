@@ -1,6 +1,6 @@
 # chrome 浏览器插件 save-anywhere
 
-save-anywerhe 可以右键保存选中的文本，存储到浏览器本地的 indexedDb
+save-anywhere 可以右键保存选中的文本，存储到浏览器本地的 indexedDb
 
 如果需要同步不同机器保存的内容，需要使用 github oauth 登陆授权，然后使用同步功能即可同步不同机器保存的内容 
 
