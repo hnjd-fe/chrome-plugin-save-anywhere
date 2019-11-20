@@ -14,8 +14,8 @@
     "finishbuild": "sh ./finishbuild.sh",
     "backup": "cp -rf ./save-anywhere/chrome ./src/ && cp -rf ./save-anywhere/manifest.json ./src/manifest.json",
     "packzip": "rm -rf save-anywhere.zip && zip -r save-anywhere.zip ./save-anywhere",
-    "postinstall": "snyk protect",
-    "test": "snyk test"
+    "postinstall": "snyk --dev protect",
+    "test": "snyk --dev test"
   },
   "dependencies": {
     "awesome-typescript-loader": "^5.2.1",
