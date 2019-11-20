@@ -7,6 +7,8 @@ import moment from '../utils/moment.js'
 import saveAs from '../utils/FileSaver.js'
 
 import sync_data from '../data/sync_data.js';
+axios.defaults.crossDomain = true;
+axios.defaults.withCredentials = true
 
 export default class IndexDB extends BaseDB {
     constructor( dbType ){
@@ -118,11 +120,11 @@ export default class IndexDB extends BaseDB {
                 .then( ( data )=>{
                     console.log( 'delete', id, data, md5 );
                    if( this.isLogin() && md5 ){
-                       axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/del&rnd=' + Date.now(), {
+                       axios.post( `${config.apiUrl}/?s=/Index/Data/del&rnd=` + Date.now(), qs.stringify({
                             uid: localStorage.getItem( 'uid' )
                             , token: localStorage.getItem( 'token' )
                             , md5: md5
-                        }).then( (res)=>{
+                        })).then( (res)=>{
                             this.parseRequestData( res, ()=>{
                                 resolve();
                             });
@@ -158,7 +160,7 @@ export default class IndexDB extends BaseDB {
             console.log( 'data added:', dataItem );
             db[config.dbDataTableName].add( dataItem ).then(()=>{
                 if( this.isLogin() ){
-                    axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/add', {
+                    axios.post( `${config.apiUrl}/?s=/Index/Data/add`, qs.stringify({
                         uid: localStorage.getItem( 'uid' )
                         , token: localStorage.getItem( 'token' )
                         , siteUrl: dataItem.siteUrl
@@ -171,7 +173,7 @@ export default class IndexDB extends BaseDB {
                         , width: parseInt( dataItem.width )
                         , tags: dataItem.tags
                         , md5: dataItem.md5
-                    }).then( (res)=>{
+                    })).then( (res)=>{
                         this.parseRequestData( res );
                     });
                 }
@@ -210,11 +212,11 @@ export default class IndexDB extends BaseDB {
                     md5[ item.md5 ] = item.id;
                 });
                 
-               axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/sync&rnd=' + Date.now(), {
+               axios.post( `${config.apiUrl}/?s=/Index/Data/sync&rnd=` + Date.now(), qs.stringify({
                     uid: localStorage.getItem( 'uid' )
                     , token: localStorage.getItem( 'token' )
                     , md5: JSON.stringify( md5 )
-                }).then( (res)=>{
+                })).then( (res)=>{
                     this.parseRequestData( res, ()=>{
                         resolve();
                     });
@@ -254,11 +256,11 @@ export default class IndexDB extends BaseDB {
                         item.token = localStorage.getItem( 'token' );
                     });
 
-                    axios.post( 'http://btbtd.org/api/saveanywhere/?s=/Index/Data/batchAdd', {
+                    axios.post( `${config.apiUrl}/?s=/Index/Data/batchAdd`, qs.stringify({
                         uid: localStorage.getItem( 'uid' )
                         , token: localStorage.getItem( 'token' )
                         , data: JSON.stringify( data )
-                    }).then( (res)=>{
+                    })).then( (res)=>{
                         resolve();
                     });
                 }

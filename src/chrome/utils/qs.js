@@ -39,6 +39,12 @@ module.exports = {
     stringify: stringify
 };
 
+window.qs =  {
+    formats: formats,
+    parse: parse,
+    stringify: stringify
+};
+
 },{"./formats":1,"./parse":3,"./stringify":4}],3:[function(require,module,exports){
 'use strict';
 
