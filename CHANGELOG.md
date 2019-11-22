@@ -1,6 +1,9 @@
 
 # save-anywhere changelog
 
+## v1.14 
+fix context menu display problem
+
 ## v1.13
 
 add snyk 

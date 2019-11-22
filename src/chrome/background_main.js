@@ -4,9 +4,9 @@ import config from './config.js';
 import db from './db.js';
 import md5 from './utils/md5.js'
 
-chrome.runtime.onInstalled.addListener(()=>{
+try{
     main();
-})
+}catch{};
 
 /*
 {
