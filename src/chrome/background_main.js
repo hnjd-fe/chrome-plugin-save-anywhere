@@ -4,7 +4,9 @@ import config from './config.js';
 import db from './db.js';
 import md5 from './utils/md5.js'
 
-main();
+try{
+    main();
+}catch{};
 
 /*
 {
