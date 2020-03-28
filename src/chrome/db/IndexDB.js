@@ -30,17 +30,23 @@ export default class IndexDB extends BaseDB {
         });
     }
 
-    fullList( page = 1, size = 50, id ){
+	fixStatus( data ){
+		data.map( ( item ) => {
+			item.status = item.status ? true : false;
+		});
+		return data;
+	}
+
+    fullList( page = 1, size = 50, id, status, type = -1, searchText = '' ){
         let offset = ( page - 1 ) * size;
 
-        console.log( 'fullList', page, size, id );
+        //console.log( 'fullList', page, size, id, typeof status );
 
         if( id ){
             return new Promise( ( resolve, reject ) => {
                 let db = this.getDB();
                 db[config.dbDataTableName].where('id').equals( parseInt( id ) ).toArray().then( ( data )=>{
-                    console.log( data, id );
-                    
+					this.fixStatus( data );
                     resolve( { data: data, total: data.length }
                     );
                 });
@@ -51,10 +57,30 @@ export default class IndexDB extends BaseDB {
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
             db[config.dbDataTableName].count(( count )=>{
-                db[config.dbDataTableName].orderBy('updateDate').reverse().offset( offset ).limit( size ).toArray().then( ( data )=>{
-                    console.log( 'list data', data );
+                let query = db[config.dbDataTableName].orderBy('updateDate').reverse();
+
+                if( searchText ){
+                    query.filter( ( item ) => {
+                        return item.note.indexOf( searchText ) > -1;
+                    });
+                }
+
+                if( typeof status == 'boolean' ){
+					let statusNum = status ? 1 : 0;
+					query = query.filter( ( item ) => {
+						return item.status == statusNum;
+					});
+				}
+				if( type > -1 ){
+					query = query.filter( ( item ) => {
+						return item.type == type;
+					});
+				}
+
+              	query.offset( offset ).limit( size ).toArray().then( ( data )=>{
+					this.fixStatus( data );
                     resolve( 
-                        { data: data, total: count }
+                        { data: data, total: data.length }
                     );
                 });
             });
@@ -109,6 +135,35 @@ export default class IndexDB extends BaseDB {
             } )
         })
     }
+
+    update( id, json ) {
+        return new Promise( ( resolve, reject ) => {
+            let db = this.getDB();
+			let r;
+            json.status = json.status ? 1 : 0;
+            json.updateDate = Date.now();
+            db.transaction( 'rw', db[config.dbDataTableName], () => {
+               db[config.dbDataTableName].where('id').equals( parseInt( id ) ).modify( ( data )=>{
+			   		for( let k in json ){
+						data[k] = json[k];
+					}
+					console.log( 'indexdb update', data );
+                }).then( ()=>{
+                    console.log( 'update', id, json, json.md5 );
+                   if( this.isLogin() && json.md5 ){
+                       delete json.nid;
+                       axios.post( `${config.apiUrl}/?s=/Index/Data/update&rnd=` + Date.now(), qs.stringify({
+                            ...json
+                            , uid: localStorage.getItem( 'uid' )
+                            , token: localStorage.getItem( 'token' )
+                        })).then( (res)=>{
+                        });
+                    }
+                    resolve( json );
+                });;
+            });
+        });
+	}
 
     deleteItem( id, md5 ) {
         return new Promise( ( resolve, reject ) => {
@@ -196,7 +251,7 @@ export default class IndexDB extends BaseDB {
         });
     }
 
-    sync() {
+    sync( returnUrl ) {
         return new Promise( ( resolve, reject ) => {
             if( !this.isLogin() ){
                 resolve();
@@ -209,7 +264,9 @@ export default class IndexDB extends BaseDB {
                 let md5 = {};
 
                 data.map( ( item ) => {
-                    md5[ item.md5 ] = item.id;
+                    delete item.id;
+                    delete item.nid;
+                    md5[ item.md5 ] = item
                 });
                 
                axios.post( `${config.apiUrl}/?s=/Index/Data/sync&rnd=` + Date.now(), qs.stringify({
@@ -217,9 +274,11 @@ export default class IndexDB extends BaseDB {
                     , token: localStorage.getItem( 'token' )
                     , md5: JSON.stringify( md5 )
                 })).then( (res)=>{
+                    console.log( 'sync', Date.now(), res );
+                    // return;
                     this.parseRequestData( res, ()=>{
                         resolve();
-                    });
+                    }, returnUrl);
                 });
                 /*
                 this.parseRequestData( {data:sync_data}, ()=>{
@@ -271,7 +330,7 @@ export default class IndexDB extends BaseDB {
 
     }
 
-    parseRequestData( res, cb ){
+    parseRequestData( res, cb, returnUrl ){
         if( res && res.data && res.data.errno === 1 ){
             this.logout();
             return;
@@ -295,33 +354,44 @@ export default class IndexDB extends BaseDB {
                     this.batchDelete( 'md5', md5List ).then( ()=>{
                         this.batchAdd( res.data.data.sync ).then( ( data )=>{
                             this.refresh++;
-                            this.checkRefresh();
+                            this.checkRefresh(returnUrl);
                         });
                     });
                 }else{
                     this.refresh++;
-                    this.checkRefresh();
+                    this.checkRefresh(returnUrl);
                 }
                 if( res.data.data.deleted && res.data.data.deleted.length ){
                     this.batchDelete( 'md5', res.data.data.deleted ).then( ()=>{
                         this.refresh++;
-                        this.checkRefresh();
+                        this.checkRefresh(returnUrl);
                     });
                 }else{
                     this.refresh++;
-                    this.checkRefresh();
+                    this.checkRefresh(returnUrl);
                 }
 
                 console.log( 'news', res.data.data.news );
                 if( res.data.data.news && res.data.data.news.length ){
                     this.batchPush( 'md5', res.data.data.news).then( ()=>{
                         this.refresh++;
-                        this.checkRefresh();
+                        this.checkRefresh(returnUrl);
                     });
                 }else{
                     this.refresh++;
-                    this.checkRefresh();
+                    this.checkRefresh(returnUrl);
                 }
+
+                if( res.data.data.update && res.data.data.update.length ){
+                    this.batchUpdate( res.data.data.update).then( ()=>{
+                        this.refresh++;
+                        this.checkRefresh(returnUrl);
+                    });
+                }else{
+                    this.refresh++;
+                    this.checkRefresh(returnUrl);
+                }
+
 
             }
         }
@@ -329,9 +399,13 @@ export default class IndexDB extends BaseDB {
         cb && cb( res.data );
     }
 
-    checkRefresh(){
-        if( this.refresh === 3 ){
-            location.reload();
+    checkRefresh(returnUrl){
+        if( this.refresh === 4 ){
+            if( returnUrl ){
+                location.replace( returnUrl );
+            }else{
+                location.reload();
+            }
         }
     }
 
@@ -358,8 +432,8 @@ export default class IndexDB extends BaseDB {
                 listData.push( {
                     note: tmpNote
                     , md5: md5( tmpNote )
-                    , siteUrl: 'index.html'
-                    , siteTitle: '-'
+                    , status: Math.round( Math.random() )
+                    , type: parseInt( Math.random() * 4 )
                     , tags: ''
                     , remark: ''
                     , width: "100"

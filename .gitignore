@@ -7,6 +7,8 @@ yarn-error.log*
 yarn.lock
 
 save-anywhere
+save-anywhere.zip
+save-anywhere.crx
 
 .DS_Store
 

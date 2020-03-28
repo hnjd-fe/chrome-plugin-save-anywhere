@@ -62,13 +62,7 @@ function addNote(info, tab) {
 
 
 		chrome.permissions.request({
-			permissions: ['tabs'],
-			origins: [
-				"http://*/"
-				, "https://*/"
-				, "ftp://*/"
-                , "file:///*/"
-			]
+			permissions: ['activeTab']
 		}, function(granted) {
 			// The callback argument will be true if the user granted the permissions.
 			if (granted) {
