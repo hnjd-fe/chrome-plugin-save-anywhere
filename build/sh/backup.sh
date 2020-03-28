@@ -1,4 +1,4 @@
-cp -rf ./fqt-todo/chrome ./src/ 
-cp -rf ./fqt-todo/assets ./src/
+cp -rf ./save-anywhere/chrome ./src/ 
+cp -rf ./save-anywhere/assets ./src/
 
-cp -rf ./fqt-todo/manifest.json ./src/manifest.json
+cp -rf ./save-anywhere/manifest.json ./src/manifest.json
