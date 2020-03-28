@@ -2,7 +2,7 @@
   <el-container>
     <el-header style="text-align: left; font-size: 12px">
       <el-row>
-        <el-col :span="8">
+        <el-col :span="7">
           <span>
             <i class="el-icon-logo" style="margin-right: 0px"></i>
           </span>
@@ -20,7 +20,7 @@
             <i class="el-icon-refresh">{{$t('synchronous_short')}}</i>
           </el-link>
         </el-col>
-        <el-col :span="16" style="text-align:right;">
+        <el-col :span="17" style="text-align:right;">
           &nbsp;
           <el-input
             :placeholder="$t('searchPlaceholder')"

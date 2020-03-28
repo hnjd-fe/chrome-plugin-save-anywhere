@@ -255,7 +255,7 @@ export default class IndexDB extends BaseDB {
                     , md5: JSON.stringify( md5 )
                 })).then( (res)=>{
                     console.log( 'sync', Date.now(), res );
-                    return;
+                    // return;
                     this.parseRequestData( res, ()=>{
                         resolve();
                     }, returnUrl);
