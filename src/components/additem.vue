@@ -94,6 +94,11 @@
 .demo-drawer__footer {
   margin-top: 15px;
 }
+
+.el-drawer__body {
+	overflow-y: auto;
+}
+
 </style>
 
 <script>
