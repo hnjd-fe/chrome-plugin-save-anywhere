@@ -34,7 +34,7 @@ let mixin = {
 
             , typemap: typemap
 
-			, filterStatus: typeof store.get( 'status' ) != 'undefined' ? store.get( 'status' ) : '-1'
+			, filterStatus: typeof store.get( 'status' ) != 'undefined' ? store.get( 'status' ) : -1
 			, sortList: false
             , syncReturnUrl: ''
         }

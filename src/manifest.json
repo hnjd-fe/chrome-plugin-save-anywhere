@@ -1,7 +1,7 @@
 {
     "name": "save-anywhere"
     , "short_name": "saveanywhere"
-    , "version": "1.14"
+    , "version": "1.15"
     , "description": "save-anywerhe 可以右键保存选中的文本，存储到浏览器本地的 indexedDb。如果需要同步不同机器保存的内容，需要使用 github oauth 登陆授权，然后使用同步功能即可同步不同机器保存的内容。"
     , "manifest_version": 2
     , "browser_action": {
