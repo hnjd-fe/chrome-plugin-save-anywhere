@@ -121,7 +121,7 @@ export default class IndexDB extends BaseDB {
     getDB(){
         let db = new Dexie( config.dbName );
         db.version(1).stores({
-            [`${config.dbDataTableName}`]: "++id,note,siteUrl,siteTitle,tags,remark,width,height,md5,createDate,updateDate"
+            [`${config.dbDataTableName}`]: "++id,note,siteUrl,siteTitle,tags,remark,width,height,md5,createDate,updateDate,status"
         });
         return db;
     }
@@ -214,6 +214,7 @@ export default class IndexDB extends BaseDB {
                 , height: 100
                 , createDate: dateStr
                 , updateDate: dateStr
+                , status: 1
                 }
                 , json 
             );
@@ -233,6 +234,7 @@ export default class IndexDB extends BaseDB {
                         , width: parseInt( dataItem.width )
                         , tags: dataItem.tags
                         , md5: dataItem.md5
+                        , status: dataItem.status ? 1 : 0
                     })).then( (res)=>{
                         this.parseRequestData( res );
                     });
