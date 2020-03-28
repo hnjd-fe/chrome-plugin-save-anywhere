@@ -14,7 +14,7 @@
     <el-row class="demo-drawer__content">
       <el-col>
         <el-form :model="form" @submit.native.prevent :label-width="formLabelWidth">
-          <el-form-item label="note">
+          <el-form-item :label="$t('note')">
             <el-input
               autocomplete="off"
               v-focus
@@ -27,7 +27,7 @@
             ></el-input>
           </el-form-item>
 					
-          <el-form-item label="title">
+          <el-form-item :label="$t('title')">
             <el-input
               autocomplete="off"
               v-focus
@@ -40,7 +40,7 @@
             ></el-input>
           </el-form-item>
 
-          <el-form-item label="url">
+          <el-form-item :label="$t('url')">
             <el-input
               autocomplete="off"
               v-focus

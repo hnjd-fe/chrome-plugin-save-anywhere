@@ -9,7 +9,7 @@ const lang = {
 		, "curTotalLabel": "current query items:"
 
 		//index
-		, "note": "notes"
+		, "note": "Note"
 		, "updateDate": "latest update"
 		, "operation": "operation"
 		, "modify": "modify"

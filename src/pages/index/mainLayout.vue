@@ -49,15 +49,15 @@
         <el-table-column :label="$t('note')">
           <template slot-scope="scope">
             <div>
-              <a :href="scope.row.siteUrl" target="_blank">
+              <a :href="scope.row.siteUrl || 'javascript:;'" target="_blank" v-if="scope.row.siteUrl || scope.row.siteTitle">
                 <label
-                  v-if="scope.row.siteTitle"
+                  v-if="scope.row.siteTitle || scope.row.siteUrl "
                   style="display:block;font-weight:bold; margin-bottom:5px;"
-                  v-html="hightlightSearch(scope.row.siteTitle)"
+                  v-html="hightlightSearch(scope.row.siteTitle || scope.row.siteUrl)"
                 ></label>
               </a>
               <span v-html="hightlightSearch(scope.row.note, 1, scope.row )"></span>
-              <a :href="scope.row.siteUrl" target="_blank">
+              <a :href="scope.row.siteUrl" target="_blank" v-if="scope.row.siteUrl">
                 <label
                   v-if="scope.row.siteUrl"
                   style="display:block; margin-top:5px;"
@@ -71,10 +71,10 @@
             <span>{{moment(parseInt(scope.row.updateDate)).format('YYYY-MM-DD HH:mm:ss')}}</span>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('operation')" :width="200">
+        <el-table-column :label="$t('operation')" :width="90">
           <template slot-scope="scope">
             <el-button @click="onEditItem( $event, scope.row, 0 )" size="mini">{{$t('modify')}}</el-button>
-            <el-button @click="onDeleteItem( $event, scope.row.id, scope.row )" size="mini">{{$t('delete')}}</el-button>
+            <!-- <el-button @click="onDeleteItem( $event, scope.row.id, scope.row )" size="mini">{{$t('delete')}}</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -120,6 +120,14 @@
   text-align: right;
   padding: 10px;
 }
+
+.search_pre {
+  margin: 0;
+}
+
+td .cell {
+  line-height: 28px!important;
+}
 </style>
 
 <script>
@@ -161,9 +169,7 @@ export default {
           ._d.getTime()
       };
     },
-    closeAdd() {
-      this.additemjson_pnt = null;
-    },
+
     updateList(json, type, item) {
       this.tmer && clearTimeout(this.tmer);
 

@@ -34,8 +34,7 @@ let mixin = {
 
             , typemap: typemap
 
-			, filterStatus: typeof store.get( 'status' ) != 'undefined' ? store.get( 'status' ) : false
-			, filterType: -1
+			, filterStatus: typeof store.get( 'status' ) != 'undefined' ? store.get( 'status' ) : '-1'
 			, sortList: false
             , syncReturnUrl: ''
         }
@@ -52,13 +51,13 @@ let mixin = {
         }
 
         , filterChange( status, val ){
-            this.updateFullList( 1, this.$route.query.id, this.getSearchText() );
             store.set( 'status', status );
+            this.updateFullList( 1, this.$route.query.id, this.getSearchText() );
             this.loading = false;
         }
 		, filterTypeChange( type ){
-            this.updateFullList( 1, this.$route.query.id, this.getSearchText() );
 			store.set( 'type', type );
+            this.updateFullList( 1, this.$route.query.id, this.getSearchText() );
 		}
         , getSearchText(){
             let search = (this.searchText||'').trim();
@@ -114,12 +113,15 @@ let mixin = {
                 this.updateFullTotal();
             });
         }
-        , updateFullList( page = 1, id ) {
-            db.fullList( page, 50, id )
+        , updateFullList( page = 1, id, searchText = '' ) {
+            db.fullList( page, 50, id, this.filterStatus, this.filterType, searchText )
             .then( ( data )=>{
+
                 this.listData = data.data;
 				this.listTotal = data.total;
 				this.page = 1;
+
+                console.log( 'listTotal', this.listTotal, data );
 
                 this.afterUpdateList();
                 this.updateFullTotal();

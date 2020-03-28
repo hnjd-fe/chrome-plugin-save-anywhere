@@ -14,6 +14,7 @@ const messages = {
         "setting": "setting"
 
 		, "searchPlaceholder": "search text"
+		, "inputPlaceholder": "type task in there, Ctrl+Enter submit."
 		, "nodata": "nothing in there"
 
         , "synchronous_short": "sync"
@@ -55,9 +56,17 @@ const messages = {
 
         , 'addNoteSuccess': 'note added!'
         , 'addNoteError': 'add note failed!'
+
+        , 'note': 'Note'
+        , 'title': 'Title'
+        , 'url': 'URL'
 	},
 	zh: {
         'nooooooo': ''
+
+        , 'note': '文摘'
+        , 'title': '标题'
+        , 'url': 'URL'
 
         , 'addNoteSuccess': '添加成功!'
         , 'addNoteError': '添加时出错了！'

@@ -6,10 +6,10 @@
 
 <script>
 
-window.name = '_save_anywhere_popup';
+import mainLayout from './mainLayout.vue'
 
 const packInfo = require( '@root/package.json' )
-import mainLayout from './mainLayout.vue'
+window.name = `_${packInfo.name}_popup`;
 
 export default {
     data(){

@@ -40,7 +40,10 @@ let mixin = {
 		}
 		, closeEdit() {
 			this.itemjson = null;
-		}
+        }
+        , closeAdd() {
+            this.additemjson_pnt = null;
+        }
 		, updateList( json, type, item ){
 			this.tmer && clearTimeout( this.tmer );
 
