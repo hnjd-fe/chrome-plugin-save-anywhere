@@ -68,6 +68,9 @@ export default class IndexDB extends BaseDB {
                 if( typeof status == 'boolean' ){
 					let statusNum = status ? 1 : 0;
 					query = query.filter( ( item ) => {
+                        if( !('status' in item ) && statusNum === 0 ){
+                            return true;
+                        }
 						return item.status == statusNum;
 					});
 				}
@@ -75,7 +78,9 @@ export default class IndexDB extends BaseDB {
 					query = query.filter( ( item ) => {
 						return item.type == type;
 					});
-				}
+                }
+                
+                console.log('status', status, query )
 
               	query.offset( offset ).limit( size ).toArray().then( ( data )=>{
 					this.fixStatus( data );
