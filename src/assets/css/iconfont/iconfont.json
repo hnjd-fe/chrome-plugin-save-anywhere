@@ -1,0 +1,23 @@
+{
+  "id": "1463396",
+  "name": "webpack-icon",
+  "font_family": "element-icons",
+  "css_prefix_text": "el-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "304687",
+      "name": "enter",
+      "font_class": "enter",
+      "unicode": "e6e3",
+      "unicode_decimal": 59107
+    },
+    {
+      "icon_id": "587134",
+      "name": "sync",
+      "font_class": "sync",
+      "unicode": "e814",
+      "unicode_decimal": 59412
+    }
+  ]
+}
