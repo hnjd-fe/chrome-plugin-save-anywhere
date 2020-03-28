@@ -1,5 +1,10 @@
 
+import GridDataComp from '@src/components/griddata.vue';
+import ListDataComp from '@src/components/listdata.vue';
 import db from '@src/chrome/db.js'
+import typemap from '@src/data/typemap.js'
+
+import store from 'store'
 
 let mixin = {
     data() {
@@ -26,6 +31,13 @@ let mixin = {
             , md5: localStorage.getItem( 'md5' )
             , logintype: localStorage.getItem( 'logintype' )
             , uid: localStorage.getItem( 'uid' )
+
+            , typemap: typemap
+
+			, filterStatus: typeof store.get( 'status' ) != 'undefined' ? store.get( 'status' ) : false
+			, filterType: -1
+			, sortList: false
+            , syncReturnUrl: ''
         }
     }
     , methods: {
@@ -37,6 +49,23 @@ let mixin = {
                 db.sync().then( ()=>{
                 });
             }
+        }
+
+        , filterChange( status, val ){
+            this.updateFullList( 1, this.$route.query.id, this.getSearchText() );
+            store.set( 'status', status );
+            this.loading = false;
+        }
+		, filterTypeChange( type ){
+            this.updateFullList( 1, this.$route.query.id, this.getSearchText() );
+			store.set( 'type', type );
+		}
+        , getSearchText(){
+            let search = (this.searchText||'').trim();
+            if( search.length < 2 ){
+                search = '';
+            }
+            return search;
         }
         , initLogin() {
             this.setDataItem( 'token' );
@@ -103,6 +132,7 @@ let mixin = {
         , updateFullTotal(){
             db.total().then( ( total ) => {
                 this.fullTotal = total;
+                this.loading = false;
             });
         }
 

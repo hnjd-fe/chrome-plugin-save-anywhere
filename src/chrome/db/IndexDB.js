@@ -196,7 +196,7 @@ export default class IndexDB extends BaseDB {
         });
     }
 
-    sync() {
+    sync( returnUrl ) {
         return new Promise( ( resolve, reject ) => {
             if( !this.isLogin() ){
                 resolve();
@@ -209,7 +209,9 @@ export default class IndexDB extends BaseDB {
                 let md5 = {};
 
                 data.map( ( item ) => {
-                    md5[ item.md5 ] = item.id;
+                    delete item.id;
+                    delete item.nid;
+                    md5[ item.md5 ] = item
                 });
                 
                axios.post( `${config.apiUrl}/?s=/Index/Data/sync&rnd=` + Date.now(), qs.stringify({
@@ -217,9 +219,10 @@ export default class IndexDB extends BaseDB {
                     , token: localStorage.getItem( 'token' )
                     , md5: JSON.stringify( md5 )
                 })).then( (res)=>{
+                    console.log( 'sync', Date.now(), res );
                     this.parseRequestData( res, ()=>{
                         resolve();
-                    });
+                    }, returnUrl);
                 });
                 /*
                 this.parseRequestData( {data:sync_data}, ()=>{

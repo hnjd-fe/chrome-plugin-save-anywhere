@@ -1,5 +1,5 @@
 <template>
-<el-container style="height: 500px; border: 1px solid #eee" class="popup_layout">
+<el-container style="height: 600px; border: 1px solid #eee" class="popup_layout">
   <el-container>
       <el-header>
           <el-input
