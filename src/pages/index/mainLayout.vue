@@ -86,14 +86,20 @@
 		:update="updateList"
 		/>
     <el-pagination
-      v-if="listData.length && !loading && listTotal > listPageSize"
+      v-if="listData.length && !loading && fullTotal > listPageSize"
       background
       layout="prev, pager, next"
-      :total="listTotal"
+      :total="fullTotal"
       :page-size="listPageSize"
       :current-page="listCurPage"
       @current-change="curListChange"
     ></el-pagination>
+    <div style="position: absolute; top: 80px; display: none;">
+      listTotal: {{listTotal}}
+      , listPageSize: {{listPageSize}}
+      , listCurPage: {{listCurPage}}
+      , fullTotal: {{fullTotal}}
+    </div>
   </el-container>
 </template>
 
