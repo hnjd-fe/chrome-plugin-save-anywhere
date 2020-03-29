@@ -10,7 +10,7 @@ save-anywhere 可以右键保存选中的文本，存储到浏览器本地的 in
 
 ### 从 github 下载 save-anywhere 浏览器插件 离线安装包
 
-[save-anywhere.crx](https://raw.githubusercontent.com/hnjd-fe/chrome-plugin-save-anywhere/master/dist/save-anywhere.crx)
+[save-anywhere.crx](https://raw.githubusercontent.com/hnjd-fe/chrome-plugin-save-anywhere/master/dist/pkmhmadaamenokoblegahibppfoeilap.crx)
 
 ### 从 chrome 应用商店下载 save-where 浏览器插件
 
