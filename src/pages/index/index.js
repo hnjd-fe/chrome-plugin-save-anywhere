@@ -15,6 +15,9 @@ import routes from './routes.js';
 import databaseInfo from '@src/components/databaseInfo.vue'
 
 import globalVar from '@src/globalVar.js';
+import linkify from 'vue-linkify'
+
+Vue.directive('linkified', linkify)
 
 require( '@src/chrome/chrome_login.js');
 

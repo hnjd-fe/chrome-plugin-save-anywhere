@@ -12,6 +12,9 @@ import store from '@src/store';
 import router from './router';
 import routes from './routes.js';
 
+import linkify from 'vue-linkify'
+Vue.directive('linkified', linkify)
+
 require( '@src/chrome/chrome_login.js');
 
 router.addRoutes(routes);

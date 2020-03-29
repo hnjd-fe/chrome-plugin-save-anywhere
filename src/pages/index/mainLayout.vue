@@ -49,14 +49,18 @@
         <el-table-column :label="$t('note')">
           <template slot-scope="scope">
             <div>
-              <a :href="scope.row.siteUrl || 'javascript:;'" target="_blank" v-if="scope.row.siteUrl || scope.row.siteTitle">
+              <a :href="scope.row.siteUrl || 'javascript:;'" target="_blank" v-if="scope.row.siteUrl">
                 <label
                   v-if="scope.row.siteTitle || scope.row.siteUrl "
                   style="display:block;font-weight:bold; margin-bottom:5px;"
                   v-html="hightlightSearch(scope.row.siteTitle || scope.row.siteUrl)"
                 ></label>
               </a>
-              <span v-html="hightlightSearch(scope.row.note, 1, scope.row )"></span>
+                <label v-else
+                  style="display:block;font-weight:bold; margin-bottom:5px;"
+                  v-html="hightlightSearch(scope.row.siteTitle)"
+                ></label>
+              <span v-html="hightlightSearch(scope.row.note, 1, scope.row )" v-linkified></span>
               <a :href="scope.row.siteUrl" target="_blank" v-if="scope.row.siteUrl">
                 <label
                   v-if="scope.row.siteUrl"
