@@ -37,7 +37,7 @@ const messages = {
 
         , "status--1": "All Notes"
         , "status-0": "Internet"
-        , "status-1": "Custom"
+        , "status-1": "Note"
 
         , "type--1": "All Type"
         , "type-0": "Important urgent"
@@ -103,7 +103,7 @@ const messages = {
 
         , "status--1": "全部笔记"
         , "status-0": "互联网"
-        , "status-1": "自定义"
+        , "status-1": "笔记"
 
         , "type--1": "全部类型"
         , "type-0": "很重要-很紧急"
