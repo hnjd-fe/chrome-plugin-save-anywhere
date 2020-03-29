@@ -5,12 +5,12 @@
     direction="rtl"
     custom-class="edit-drawer"
     ref="drawer"
-    :show-close="false"
+    :show-close="frompage=='popup'"
   >
     <el-row slot="title" class="dtitle">
       <el-col :span="22">{{$t('editTask')}}</el-col>
       <el-col :span="2" style="text-align: center; white-space: nowrap">
-        <el-link type="danger" @click="onDelete()">{{$t('delete')}}</el-link>
+        <el-link type="danger" @click="onDelete()" v-if="frompage!='popup'">{{$t('delete')}}</el-link>
       </el-col>
     </el-row>
     <el-row class="demo-drawer__content">
@@ -106,7 +106,7 @@ import modifyMixin from "@src/mixin/modify.js";
 
 export default {
   mixins: [modifyMixin],
-  props: ["index", "item", "close", "update", "isedit"],
+  props: ["index", "item", "close", "update", "isedit", 'frompage'],
   watch: {
     isedit: function(newv, oldv) {
       this.dialog = !!newv;

@@ -69,7 +69,7 @@
             </el-col>
             <el-col :span="4" class="source">
                 <div>
-                    <el-link :href="'index.html?id='+item.id" :title="$t('source')">
+                    <el-link :href="'index.html?id='+item.id" :title="$t('source')" :target="`_${packInfo.name}_index`">
                         <el-button  icon="el-icon-view" 
                         :title="$t('source')"
                         size="mini"
@@ -138,11 +138,13 @@
 		:isedit="additemjson_pnt"
 		:close="closeAdd"
 		:update="updateList"
+        frompage="popup"
 		/>
 		<EditItemComp 
 		:isedit="itemjson"
 		:close="closeEdit"
 		:update="updateList"
+        frompage="popup"
 		/>
 
   </el-container>

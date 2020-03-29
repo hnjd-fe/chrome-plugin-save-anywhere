@@ -106,7 +106,7 @@ import modifyMixin from "@src/mixin/modify.js";
 
 export default {
   mixins: [modifyMixin],
-  props: ["index", "item", "close", "update", "isedit"],
+  props: ["index", "item", "close", "update", "isedit", 'frompage'],
   watch: {
     isedit: function(newv, oldv) {
       this.dialog = !!newv;
