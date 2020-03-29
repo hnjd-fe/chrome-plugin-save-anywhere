@@ -51,6 +51,7 @@ function addNote(info, tab) {
 		, md5: ''
 		, width: tab.width.toString()
 		, height: tab.height.toString()
+		, status: 0
 	}
 
     chrome.tabs.executeScript(tab.id, {code:"document.body.innerHTML"}, ( data )=>{
