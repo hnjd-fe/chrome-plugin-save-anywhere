@@ -171,7 +171,7 @@ export default class IndexDB extends BaseDB {
         });
 	}
 
-    deleteItem( id, md5 ) {
+    deleteItem( id, md5, item ) {
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
             db[config.dbDataTableName]
@@ -179,13 +179,17 @@ export default class IndexDB extends BaseDB {
                 .equals( id )
                 .delete()
                 .then( ( data )=>{
-                    console.log( 'delete', id, data, md5 );
+                    console.log('delete', data)
                    if( this.isLogin() && md5 ){
-                       axios.post( `${config.apiUrl}/?s=/Index/Data/del&rnd=` + Date.now(), qs.stringify({
-                            uid: localStorage.getItem( 'uid' )
-                            , token: localStorage.getItem( 'token' )
-                            , md5: md5
-                        })).then( (res)=>{
+
+                    let data = { 
+                        uid: localStorage.getItem( 'uid' )
+                        , token: localStorage.getItem( 'token' )
+                        , md5: md5
+                        , nid: item.nid
+                    };
+
+                       axios.post( `${config.apiUrl}/?s=/Index/Data/del&rnd=` + Date.now(), qs.stringify(data)).then( (res)=>{
                             this.parseRequestData( res, ()=>{
                                 resolve();
                             });
@@ -275,7 +279,7 @@ export default class IndexDB extends BaseDB {
             }
             let db = this.getDB();
             db[config.dbDataTableName].toArray().then( ( data )=>{
-                console.log( data );
+                // console.log( data );
 
                 let md5 = {};
                 let nid = {};
@@ -297,7 +301,7 @@ export default class IndexDB extends BaseDB {
                     , md5: JSON.stringify( md5 )
                     , nid: JSON.stringify( nid )
                 })).then( (res)=>{
-                    console.log( 'sync', Date.now(), res );
+                    // console.log( 'sync', Date.now(), res );
                     // return;
                     this.parseRequestData( res, ()=>{
                         resolve();
@@ -336,10 +340,8 @@ export default class IndexDB extends BaseDB {
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
 
-            console.log( 'x1' );
             db[config.dbDataTableName].where( key ).anyOf( list ).toArray().then( ( data )=>{
                 if( this.isLogin() ){
-                    console.log( 'x2' );
                     data.map( (item)=>{
                         delete item.id;
                         item.uid = localStorage.getItem( 'uid' );
@@ -362,10 +364,10 @@ export default class IndexDB extends BaseDB {
     }
 
     parseRequestData( res, cb, returnUrl ){
-        if( res && res.data && res.data.errno === 1 ){
-            throw new Error(JSON.stringify(res));
-            return;
-        }
+        // if( res && res.data && res.data.errno === 1 ){
+        //     throw new Error(JSON.stringify(res));
+        //     return;
+        // }
         if( res && res.data && res.data.errno === 1 ){
             this.logout();
             return;
@@ -378,7 +380,7 @@ export default class IndexDB extends BaseDB {
         this.refresh = 0;
 
         if( res && res.data && res.data.errno === 0 ){
-            console.log( 'res.data', res.data );
+            // console.log( 'res.data', res.data );
 
             if( res.data && res.data && res.data.data ) {
                 if(  res.data.data.sync && res.data.data.sync.length ){
@@ -407,7 +409,7 @@ export default class IndexDB extends BaseDB {
                 }
 
                 if( res.data.data.deletedNid && res.data.data.deletedNid.length ){
-                    console.log('batchDelete', 'nid', res.data.data.deletedNid);
+                    // console.log('batchDelete', 'nid', res.data.data.deletedNid);
                     this.batchDelete( 'nid', res.data.data.deletedNid ).then( ()=>{
                         this.refresh++;
                         this.checkRefresh(returnUrl);
@@ -417,7 +419,7 @@ export default class IndexDB extends BaseDB {
                     this.checkRefresh(returnUrl);
                 }
 
-                console.log( 'news', res.data.data.news );
+                // console.log( 'news', res.data.data.news );
                 if( res.data.data.news && res.data.data.news.length ){
                     this.batchPush( 'md5', res.data.data.news).then( ()=>{
                         this.refresh++;
@@ -446,7 +448,6 @@ export default class IndexDB extends BaseDB {
     }
 
     checkRefresh(returnUrl){
-        return;
         if( this.refresh === 5 ){
             if( returnUrl ){
                 location.replace( returnUrl );
@@ -491,7 +492,7 @@ export default class IndexDB extends BaseDB {
             }
 
             db[config.dbDataTableName].bulkAdd( listData).then(function() {
-                console.log( 'dataGenerator successfully', limit )
+                // console.log( 'dataGenerator successfully', limit )
                 resolve( listData )
             }).catch(function (e) {
                 console.error("dataGenerator Error: " + (e.stack || e));
@@ -602,7 +603,7 @@ export default class IndexDB extends BaseDB {
                                 delete item.id;
                                 if( !(item.md5 in importData.map) ){
                                     newData.push( item );
-                                    console.log( 'newItem:', item );
+                                    // console.log( 'newItem:', item );
                                 }
                             });
 

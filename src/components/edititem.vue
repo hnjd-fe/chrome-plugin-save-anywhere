@@ -145,7 +145,7 @@ export default {
         () => {
           console.log("onDelete", Date.now());
 
-          this.deleteItem(this.form.id, this.form.md5).then(() => {
+          this.deleteItem(this.form.id, this.form.md5, this.form).then(() => {
             this.onClose();
             this.update && this.update();
           });
