@@ -14,9 +14,7 @@
     }
     , "permissions": [ 
         "activeTab"
-		, "identity"
         , "windows"
-        , "declarativeContent"
         , "storage"
         , "contextMenus"
         , "notifications"
