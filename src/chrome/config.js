@@ -18,7 +18,7 @@ const config = {
     , "dbDataTableName": "notes"
     , "operationDelayMs": 500
 
-    , "apiUrl": `http://btbtd.org/api/${manifest.short_name}`
+    , "apiUrl": `http://vpslocal.webfe.tech/api/${manifest.short_name}`
 };
 
 export default config;

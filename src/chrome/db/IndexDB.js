@@ -141,7 +141,8 @@ export default class IndexDB extends BaseDB {
         })
     }
 
-    update( id, json ) {
+    update( id, json, ignoreRemote ) {
+        this.updateMd5(json);
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
 			let r;
@@ -155,8 +156,8 @@ export default class IndexDB extends BaseDB {
 					console.log( 'indexdb update', data );
                 }).then( ()=>{
                     console.log( 'update', id, json, json.md5 );
-                   if( this.isLogin() && json.md5 ){
-                       delete json.nid;
+
+                   if( this.isLogin() && json.md5 && !ignoreRemote ){
                        axios.post( `${config.apiUrl}/?s=/Index/Data/update&rnd=` + Date.now(), qs.stringify({
                             ...json
                             , uid: localStorage.getItem( 'uid' )
@@ -219,7 +220,8 @@ export default class IndexDB extends BaseDB {
                 , json 
             );
             console.log( 'data added:', dataItem );
-            db[config.dbDataTableName].add( dataItem ).then(()=>{
+            this.updateMd5(dataItem);
+            db[config.dbDataTableName].add( dataItem ).then(( addedId )=>{
                 if( this.isLogin() ){
                     axios.post( `${config.apiUrl}/?s=/Index/Data/add`, qs.stringify({
                         uid: localStorage.getItem( 'uid' )
@@ -236,6 +238,13 @@ export default class IndexDB extends BaseDB {
                         , md5: dataItem.md5
                         , status: dataItem.status ? 1 : 0
                     })).then( (res)=>{
+                        console.log('add done')
+                        console.log(res);
+                        if( res && res.data && res.data.data && res.data.data.nid ) {
+                            dataItem.nid = res.data.data.nid;
+                            this.update(addedId, dataItem, true);
+                            console.log('got nid from server')
+                        }
                         this.parseRequestData( res );
                     });
                 }
@@ -411,6 +420,7 @@ export default class IndexDB extends BaseDB {
     }
 
     checkRefresh(returnUrl){
+        return;
         if( this.refresh === 4 ){
             if( returnUrl ){
                 location.replace( returnUrl );
@@ -477,7 +487,7 @@ export default class IndexDB extends BaseDB {
                     }
                 });
             } )
-        }) ;
+        });
     }
 
     fixmd5Data (){
@@ -486,13 +496,17 @@ export default class IndexDB extends BaseDB {
             let r = [];
             db.transaction( 'rw', db[config.dbDataTableName], () => {
                db[config.dbDataTableName].toCollection().modify( ( data )=>{
-                    data.md5 = md5( [ data.siteTitle + data.note ].join( ' - ' ) )
+                    this.updateMd5(data);
                     r.push( data );
                 }).then( ()=>{
                     resolve( r );
                 });;
             });
         });
+    }
+
+    updateMd5(data) {
+        data.md5 = md5( [ data.siteTitle + data.note + data.siteUrl ].join( ' - ' ) );
     }
 
     fixdateData (){
