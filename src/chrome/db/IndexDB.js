@@ -278,17 +278,24 @@ export default class IndexDB extends BaseDB {
                 console.log( data );
 
                 let md5 = {};
+                let nid = {};
 
                 data.map( ( item ) => {
-                    delete item.id;
-                    delete item.nid;
-                    md5[ item.md5 ] = item
+                    md5[ item.md5 ] = {
+                        nid: item.nid
+                    };
+                    if(item.nid) {
+                        nid[item.nid] = {
+                            md5: item.md5
+                        }
+                    }
                 });
                 
                axios.post( `${config.apiUrl}/?s=/Index/Data/sync&rnd=` + Date.now(), qs.stringify({
                     uid: localStorage.getItem( 'uid' )
                     , token: localStorage.getItem( 'token' )
                     , md5: JSON.stringify( md5 )
+                    , nid: JSON.stringify( nid )
                 })).then( (res)=>{
                     console.log( 'sync', Date.now(), res );
                     // return;
@@ -310,7 +317,16 @@ export default class IndexDB extends BaseDB {
     batchDelete( key, list ){
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
-            db[config.dbDataTableName].where( key ).anyOf( list ).delete().then( ( data )=>{
+            let keySet = new Set(list);
+            db[config.dbDataTableName].toArray().then( ( data )=>{
+                data.map( item => {
+                    if(keySet.has(item[key])) {
+                        db[config.dbDataTableName]
+                        .where( 'md5' )
+                        .equals( item.md5 )
+                        .delete();
+                    }
+                })
                 resolve();
             });
         });
@@ -326,7 +342,6 @@ export default class IndexDB extends BaseDB {
                     console.log( 'x2' );
                     data.map( (item)=>{
                         delete item.id;
-                        delete item.nid;
                         item.uid = localStorage.getItem( 'uid' );
                         item.token = localStorage.getItem( 'token' );
                     });
@@ -391,6 +406,17 @@ export default class IndexDB extends BaseDB {
                     this.checkRefresh(returnUrl);
                 }
 
+                if( res.data.data.deletedNid && res.data.data.deletedNid.length ){
+                    console.log('batchDelete', 'nid', res.data.data.deletedNid);
+                    this.batchDelete( 'nid', res.data.data.deletedNid ).then( ()=>{
+                        this.refresh++;
+                        this.checkRefresh(returnUrl);
+                    });
+                }else{
+                    this.refresh++;
+                    this.checkRefresh(returnUrl);
+                }
+
                 console.log( 'news', res.data.data.news );
                 if( res.data.data.news && res.data.data.news.length ){
                     this.batchPush( 'md5', res.data.data.news).then( ()=>{
@@ -421,7 +447,7 @@ export default class IndexDB extends BaseDB {
 
     checkRefresh(returnUrl){
         return;
-        if( this.refresh === 4 ){
+        if( this.refresh === 5 ){
             if( returnUrl ){
                 location.replace( returnUrl );
             }else{
