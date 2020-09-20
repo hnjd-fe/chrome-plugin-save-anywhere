@@ -80,7 +80,7 @@ export default class IndexDB extends BaseDB {
 					});
                 }
                 
-                console.log('status', status, query )
+                // console.log('status', status, query )
 
               	query.offset( offset ).limit( size ).toArray().then( ( data )=>{
 					this.fixStatus( data );
@@ -129,7 +129,7 @@ export default class IndexDB extends BaseDB {
     deleteDB(){
         Dexie.delete( config.dbName )
     }
-
+ 
     total(){
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
@@ -141,7 +141,8 @@ export default class IndexDB extends BaseDB {
         })
     }
 
-    update( id, json ) {
+    update( id, json, ignoreRemote ) {
+        this.updateMd5(json);
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
 			let r;
@@ -152,11 +153,11 @@ export default class IndexDB extends BaseDB {
 			   		for( let k in json ){
 						data[k] = json[k];
 					}
-					console.log( 'indexdb update', data );
+					// console.log( 'indexdb update', data );
                 }).then( ()=>{
-                    console.log( 'update', id, json, json.md5 );
-                   if( this.isLogin() && json.md5 ){
-                       delete json.nid;
+                    // console.log( 'update', id, json, json.md5 );
+
+                   if( this.isLogin() && json.md5 && !ignoreRemote ){
                        axios.post( `${config.apiUrl}/?s=/Index/Data/update&rnd=` + Date.now(), qs.stringify({
                             ...json
                             , uid: localStorage.getItem( 'uid' )
@@ -170,7 +171,7 @@ export default class IndexDB extends BaseDB {
         });
 	}
 
-    deleteItem( id, md5 ) {
+    deleteItem( id, md5, item ) {
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
             db[config.dbDataTableName]
@@ -178,13 +179,17 @@ export default class IndexDB extends BaseDB {
                 .equals( id )
                 .delete()
                 .then( ( data )=>{
-                    console.log( 'delete', id, data, md5 );
+                    // console.log('delete', data)
                    if( this.isLogin() && md5 ){
-                       axios.post( `${config.apiUrl}/?s=/Index/Data/del&rnd=` + Date.now(), qs.stringify({
-                            uid: localStorage.getItem( 'uid' )
-                            , token: localStorage.getItem( 'token' )
-                            , md5: md5
-                        })).then( (res)=>{
+
+                    let data = { 
+                        uid: localStorage.getItem( 'uid' )
+                        , token: localStorage.getItem( 'token' )
+                        , md5: md5
+                        , nid: item.nid
+                    };
+
+                       axios.post( `${config.apiUrl}/?s=/Index/Data/del&rnd=` + Date.now(), qs.stringify(data)).then( (res)=>{
                             this.parseRequestData( res, ()=>{
                                 resolve();
                             });
@@ -218,8 +223,9 @@ export default class IndexDB extends BaseDB {
                 }
                 , json 
             );
-            console.log( 'data added:', dataItem );
-            db[config.dbDataTableName].add( dataItem ).then(()=>{
+            // console.log( 'data added:', dataItem );
+            this.updateMd5(dataItem);
+            db[config.dbDataTableName].add( dataItem ).then(( addedId )=>{
                 if( this.isLogin() ){
                     axios.post( `${config.apiUrl}/?s=/Index/Data/add`, qs.stringify({
                         uid: localStorage.getItem( 'uid' )
@@ -236,6 +242,13 @@ export default class IndexDB extends BaseDB {
                         , md5: dataItem.md5
                         , status: dataItem.status ? 1 : 0
                     })).then( (res)=>{
+                        // console.log('add done')
+                        // console.log(res);
+                        if( res && res.data && res.data.data && res.data.data.nid ) {
+                            dataItem.nid = res.data.data.nid;
+                            this.update(addedId, dataItem, true);
+                            // console.log('got nid from server')
+                        }
                         this.parseRequestData( res );
                     });
                 }
@@ -266,22 +279,29 @@ export default class IndexDB extends BaseDB {
             }
             let db = this.getDB();
             db[config.dbDataTableName].toArray().then( ( data )=>{
-                console.log( data );
+                // console.log( data );
 
                 let md5 = {};
+                let nid = {};
 
                 data.map( ( item ) => {
-                    delete item.id;
-                    delete item.nid;
-                    md5[ item.md5 ] = item
+                    md5[ item.md5 ] = {
+                        nid: item.nid
+                    };
+                    if(item.nid) {
+                        nid[item.nid] = {
+                            md5: item.md5
+                        }
+                    }
                 });
                 
                axios.post( `${config.apiUrl}/?s=/Index/Data/sync&rnd=` + Date.now(), qs.stringify({
                     uid: localStorage.getItem( 'uid' )
                     , token: localStorage.getItem( 'token' )
                     , md5: JSON.stringify( md5 )
+                    , nid: JSON.stringify( nid )
                 })).then( (res)=>{
-                    console.log( 'sync', Date.now(), res );
+                    // console.log( 'sync', Date.now(), res );
                     // return;
                     this.parseRequestData( res, ()=>{
                         resolve();
@@ -301,7 +321,16 @@ export default class IndexDB extends BaseDB {
     batchDelete( key, list ){
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
-            db[config.dbDataTableName].where( key ).anyOf( list ).delete().then( ( data )=>{
+            let keySet = new Set(list);
+            db[config.dbDataTableName].toArray().then( ( data )=>{
+                data.map( item => {
+                    if(keySet.has(item[key])) {
+                        db[config.dbDataTableName]
+                        .where( 'md5' )
+                        .equals( item.md5 )
+                        .delete();
+                    }
+                })
                 resolve();
             });
         });
@@ -311,13 +340,10 @@ export default class IndexDB extends BaseDB {
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
 
-            console.log( 'x1' );
             db[config.dbDataTableName].where( key ).anyOf( list ).toArray().then( ( data )=>{
                 if( this.isLogin() ){
-                    console.log( 'x2' );
                     data.map( (item)=>{
                         delete item.id;
-                        delete item.nid;
                         item.uid = localStorage.getItem( 'uid' );
                         item.token = localStorage.getItem( 'token' );
                     });
@@ -338,6 +364,10 @@ export default class IndexDB extends BaseDB {
     }
 
     parseRequestData( res, cb, returnUrl ){
+        // if( res && res.data && res.data.errno === 1 ){
+        //     throw new Error(JSON.stringify(res));
+        //     return;
+        // }
         if( res && res.data && res.data.errno === 1 ){
             this.logout();
             return;
@@ -350,7 +380,7 @@ export default class IndexDB extends BaseDB {
         this.refresh = 0;
 
         if( res && res.data && res.data.errno === 0 ){
-            console.log( 'res.data', res.data );
+            // console.log( 'res.data', res.data );
 
             if( res.data && res.data && res.data.data ) {
                 if(  res.data.data.sync && res.data.data.sync.length ){
@@ -378,7 +408,18 @@ export default class IndexDB extends BaseDB {
                     this.checkRefresh(returnUrl);
                 }
 
-                console.log( 'news', res.data.data.news );
+                if( res.data.data.deletedNid && res.data.data.deletedNid.length ){
+                    // console.log('batchDelete', 'nid', res.data.data.deletedNid);
+                    this.batchDelete( 'nid', res.data.data.deletedNid ).then( ()=>{
+                        this.refresh++;
+                        this.checkRefresh(returnUrl);
+                    });
+                }else{
+                    this.refresh++;
+                    this.checkRefresh(returnUrl);
+                }
+
+                // console.log( 'news', res.data.data.news );
                 if( res.data.data.news && res.data.data.news.length ){
                     this.batchPush( 'md5', res.data.data.news).then( ()=>{
                         this.refresh++;
@@ -407,7 +448,7 @@ export default class IndexDB extends BaseDB {
     }
 
     checkRefresh(returnUrl){
-        if( this.refresh === 4 ){
+        if( this.refresh === 5 ){
             if( returnUrl ){
                 location.replace( returnUrl );
             }else{
@@ -451,7 +492,7 @@ export default class IndexDB extends BaseDB {
             }
 
             db[config.dbDataTableName].bulkAdd( listData).then(function() {
-                console.log( 'dataGenerator successfully', limit )
+                // console.log( 'dataGenerator successfully', limit )
                 resolve( listData )
             }).catch(function (e) {
                 console.error("dataGenerator Error: " + (e.stack || e));
@@ -473,7 +514,7 @@ export default class IndexDB extends BaseDB {
                     }
                 });
             } )
-        }) ;
+        });
     }
 
     fixmd5Data (){
@@ -482,13 +523,17 @@ export default class IndexDB extends BaseDB {
             let r = [];
             db.transaction( 'rw', db[config.dbDataTableName], () => {
                db[config.dbDataTableName].toCollection().modify( ( data )=>{
-                    data.md5 = md5( [ data.siteTitle + data.note ].join( ' - ' ) )
+                    this.updateMd5(data);
                     r.push( data );
                 }).then( ()=>{
                     resolve( r );
                 });;
             });
         });
+    }
+
+    updateMd5(data) {
+        data.md5 = md5( [ data.siteTitle + data.note + data.siteUrl ].join( ' - ' ) );
     }
 
     fixdateData (){
@@ -558,7 +603,7 @@ export default class IndexDB extends BaseDB {
                                 delete item.id;
                                 if( !(item.md5 in importData.map) ){
                                     newData.push( item );
-                                    console.log( 'newItem:', item );
+                                    // console.log( 'newItem:', item );
                                 }
                             });
 

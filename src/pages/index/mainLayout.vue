@@ -211,7 +211,7 @@ export default {
     },
     onDeleteItem(evt, id, item) {
       this.loading = 1;
-      this.deleteItem(id, item.md5)
+      this.deleteItem(id, item.md5, item)
         .then(() => {
           for (let i = 0, j = this.listData.length; i < j; i++) {
             let tmp = this.listData[i];

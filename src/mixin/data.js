@@ -92,10 +92,10 @@ let mixin = {
             this.$refs.databaseInfo.updateTotal();
         }
 
-        , deleteItem( id, md5 ) {
+        , deleteItem( id, md5, item ) {
             return new Promise( ( resolve, reject ) => {
-                db.deleteItem( id, md5 ).then( ()=> {
-                    resolve( id, md5 );
+                db.deleteItem( id, md5, item ).then( ()=> {
+                    resolve( id, md5, item );
                 }).catch( ()=>{
                     reject( id );
                 });
