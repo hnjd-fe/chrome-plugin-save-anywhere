@@ -129,7 +129,7 @@ export default class IndexDB extends BaseDB {
     deleteDB(){
         Dexie.delete( config.dbName )
     }
-
+ 
     total(){
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
@@ -338,6 +338,10 @@ export default class IndexDB extends BaseDB {
     }
 
     parseRequestData( res, cb, returnUrl ){
+        if( res && res.data && res.data.errno === 1 ){
+            throw new Error(JSON.stringify(res));
+            return;
+        }
         if( res && res.data && res.data.errno === 1 ){
             this.logout();
             return;
