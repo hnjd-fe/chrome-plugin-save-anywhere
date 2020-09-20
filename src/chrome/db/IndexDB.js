@@ -80,7 +80,7 @@ export default class IndexDB extends BaseDB {
 					});
                 }
                 
-                console.log('status', status, query )
+                // console.log('status', status, query )
 
               	query.offset( offset ).limit( size ).toArray().then( ( data )=>{
 					this.fixStatus( data );
@@ -153,9 +153,9 @@ export default class IndexDB extends BaseDB {
 			   		for( let k in json ){
 						data[k] = json[k];
 					}
-					console.log( 'indexdb update', data );
+					// console.log( 'indexdb update', data );
                 }).then( ()=>{
-                    console.log( 'update', id, json, json.md5 );
+                    // console.log( 'update', id, json, json.md5 );
 
                    if( this.isLogin() && json.md5 && !ignoreRemote ){
                        axios.post( `${config.apiUrl}/?s=/Index/Data/update&rnd=` + Date.now(), qs.stringify({
@@ -179,7 +179,7 @@ export default class IndexDB extends BaseDB {
                 .equals( id )
                 .delete()
                 .then( ( data )=>{
-                    console.log('delete', data)
+                    // console.log('delete', data)
                    if( this.isLogin() && md5 ){
 
                     let data = { 
@@ -223,7 +223,7 @@ export default class IndexDB extends BaseDB {
                 }
                 , json 
             );
-            console.log( 'data added:', dataItem );
+            // console.log( 'data added:', dataItem );
             this.updateMd5(dataItem);
             db[config.dbDataTableName].add( dataItem ).then(( addedId )=>{
                 if( this.isLogin() ){
@@ -242,12 +242,12 @@ export default class IndexDB extends BaseDB {
                         , md5: dataItem.md5
                         , status: dataItem.status ? 1 : 0
                     })).then( (res)=>{
-                        console.log('add done')
-                        console.log(res);
+                        // console.log('add done')
+                        // console.log(res);
                         if( res && res.data && res.data.data && res.data.data.nid ) {
                             dataItem.nid = res.data.data.nid;
                             this.update(addedId, dataItem, true);
-                            console.log('got nid from server')
+                            // console.log('got nid from server')
                         }
                         this.parseRequestData( res );
                     });
