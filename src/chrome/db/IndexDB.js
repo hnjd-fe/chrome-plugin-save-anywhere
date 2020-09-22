@@ -321,13 +321,16 @@ export default class IndexDB extends BaseDB {
     batchDelete( key, list ){
         return new Promise( ( resolve, reject ) => {
             let db = this.getDB();
-            let keySet = new Set(list);
+            let listO = [];
+            list.map(item=>{
+                listO[item] = item;
+            })
             db[config.dbDataTableName].toArray().then( ( data )=>{
                 data.map( item => {
-                    if(keySet.has(item[key])) {
+                    if(item[key] in listO) {
                         db[config.dbDataTableName]
-                        .where( 'md5' )
-                        .equals( item.md5 )
+                        .where( key )
+                        .equalsIgnoreCase( item[key] )
                         .delete();
                     }
                 })
@@ -398,6 +401,21 @@ export default class IndexDB extends BaseDB {
                     this.refresh++;
                     this.checkRefresh(returnUrl);
                 }
+                if(  res.data.data.syncNid && res.data.data.syncNid.length ){
+                    let nidList = [];
+                    res.data.data.syncNid.map( (item)=>{
+                        nidList.push( item.nid );
+                    });
+                    this.batchDelete( 'nid', nidList ).then( ()=>{
+                        this.batchAdd( res.data.data.syncNid ).then( ( data )=>{
+                            this.refresh++;
+                            this.checkRefresh(returnUrl);
+                        });
+                    });
+                }else{
+                    this.refresh++;
+                    this.checkRefresh(returnUrl);
+                }
                 if( res.data.data.deleted && res.data.data.deleted.length ){
                     this.batchDelete( 'md5', res.data.data.deleted ).then( ()=>{
                         this.refresh++;
@@ -448,7 +466,11 @@ export default class IndexDB extends BaseDB {
     }
 
     checkRefresh(returnUrl){
-        if( this.refresh === 5 ){
+        if(localStorage.getItem('IGNORE_REFRESH')) {
+            return;
+        }
+        
+        if( this.refresh === 6 ){
             if( returnUrl ){
                 location.replace( returnUrl );
             }else{

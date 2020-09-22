@@ -45,7 +45,11 @@
 
     <el-main v-loading="loading">
       <el-table :data="listData">
-        <el-table-column prop="id" label="ID" width="80"></el-table-column>
+        <el-table-column prop="id" label="ID" width="80">
+          <template slot-scope="scope">
+            <span>{{scope.row.id}}</span><div v-if="scope.row.nid">({{scope.row.nid}})</div>
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('note')">
           <template slot-scope="scope">
             <div>
