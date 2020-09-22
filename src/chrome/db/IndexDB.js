@@ -448,7 +448,10 @@ export default class IndexDB extends BaseDB {
     }
 
     checkRefresh(returnUrl){
-        return;
+        if(localStorage.getItem('IGNORE_REFRESH')) {
+            return;
+        }
+        
         if( this.refresh === 5 ){
             if( returnUrl ){
                 location.replace( returnUrl );
